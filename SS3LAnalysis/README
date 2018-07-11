@@ -1,0 +1,51 @@
+setupATLAS
+lsetup git
+
+git clone https://oducu@gitlab.cern.ch/atlas-phys-susy-wg/Common/SS3Lep.git
+
+
+
+#### Assume you are in the project folder (SS3LAnalysis)
+
+cd ..
+mkdir build
+cd build/
+setupATLAS
+asetup 21.2,AnalysisBase,r06
+cmake ../SS3LAnalysis
+cmake --build .
+
+
+
+#### Or you just 
+
+cd SS3LAnalysis
+source initialize.sh 
+
+
+### when i want to compile
+in build directory:
+cmake --build .
+
+
+
+#### This is also nececary everytime you changed something and want to compile it!
+#### If you just want to run the code and have nothing to compile, you could also do
+
+source setupframework.sh
+
+
+
+#### Each time you log in:
+
+setupATLAS
+cd ../build
+asetup --restore
+source */setup.sh
+
+#### The script will automatically setup the same release as you previously defined in that directory. The --restore option restores the previous setup
+
+
+
+
+#### Tutorial: https://atlassoftwaredocs.web.cern.ch/ABtutorial/release_setup_change_release/
