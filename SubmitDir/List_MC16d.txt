@@ -1,0 +1,115 @@
+
+https://twiki.cern.ch/twiki/bin/viewauth/AtlasProtected/AtlasProductionGroupMC16c
+
+
+
+
+- not necessary up to date! check the .py files
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   Dear Stefano, Keisuke,
+
+Below you can find the samples missing for the SS/3Lep group, and few naive questions.
+
+Thank you,
+Cheers,
+Peter & Otilia
+
+
+ttV:
+
+already requested: aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO samples, but it would be super useful to have also the MadGraphPythia8 and Sherpa samples available for deep studies to understand the agreement in the 3b (and same-sign lepton) regions
+
+mc16_13TeV:mc16_13TeV.410111.MadGraphPythia8EvtGen_A14NNPDF23LO_ttee_Np0.
+mc16_13TeV:mc16_13TeV.410112.MadGraphPythia8EvtGen_A14NNPDF23LO_ttee_Np1.
+mc16_13TeV:mc16_13TeV.410113.MadGraphPythia8EvtGen_A14NNPDF23LO_ttmumu_Np0. 
+mc16_13TeV:mc16_13TeV.410114.MadGraphPythia8EvtGen_A14NNPDF23LO_ttmumu_Np1.
+mc16_13TeV:mc16_13TeV.410115.MadGraphPythia8EvtGen_A14NNPDF23LO_tttautau_Np0.  
+mc16_13TeV:mc16_13TeV.410116.MadGraphPythia8EvtGen_A14NNPDF23LO_tttautau_Np1.
+
+mc15_13TeV.410066.MadGraphPythia8EvtGen_A14NNPDF23LO_ttW_Np0.
+mc15_13TeV.410067.MadGraphPythia8EvtGen_A14NNPDF23LO_ttW_Np1.
+mc15_13TeV.410068.MadGraphPythia8EvtGen_A14NNPDF23LO_ttW_Np2.
+
+
+mc16_13TeV:mc16_13TeV.410144.Sherpa_NNPDF30NNLO_ttW.
+mc16_13TeV:mc16_13TeV.410142.Sherpa_NNPDF30NNLO_ttll_mll5.
+
+
+
+
+3top SM:
+mc16_13TeV:mc16_13TeV.304014.MadGraphPythia8EvtGen_A14NNPDF23_3top_SM
+
+
+
+VH:
+mc16_13TeV:mc16_13TeV.342284.Pythia8EvtGen_A14NNPDF23LO_WH125_inc.
+mc16_13TeV:mc16_13TeV.342285.Pythia8EvtGen_A14NNPDF23LO_ZH125_inc.
+
+
+
+ttH:
+mc16_13TeV:mc16_13TeV.343365.aMcAtNloPythia8EvtGen_A14_NNPDF23_NNPDF30ME_ttH125_dilep.
+mc16_13TeV:mc16_13TeV.343366.aMcAtNloPythia8EvtGen_A14_NNPDF23_NNPDF30ME_ttH125_semilep.
+mc16_13TeV:mc16_13TeV.343367.aMcAtNloPythia8EvtGen_A14_NNPDF23_NNPDF30ME_ttH125_allhad.
+
+
+Di-bosons:
+mc16_13TeV:mc16_13TeV.364261.Sherpa_222_NNPDF30NNLO_lllv_3lepfilter.
+
+and these samples used for the last paper: (not overlapping with the existing ones)
+mc15_13TeV.361069.Sherpa_CT10_llvvjj_ss_EW4. -> 364286
+mc15_13TeV.361070.Sherpa_CT10_llvvjj_ss_EW6. -> 364287
+mc15_13TeV.361071.Sherpa_CT10_lllvjj_EW6.  -> 364284
+mc15_13TeV.361072.Sherpa_CT10_lllljj_EW6.  -> 364283
+mc15_13TeV.361073.Sherpa_CT10_ggllll.      -> 345705 and 345706
+ see https://twiki.cern.ch/twiki/bin/view/AtlasProtected/MultibosonFocusGroup
+
+
+and (but the corresponding 2.2.2 samples requested):  
+mc15_13TeV.363490.Sherpa_221_NNPDF30NNLO_llll.
+mc15_13TeV.363491.Sherpa_221_NNPDF30NNLO_lllv.
+
+Question: please could you confirm that we have to use Sherpa_222 samples as default? 
+
+>> 364286 SS WW
+
+
+#tZ
+mc16_13TeV:mc16_13TeV.410550.MadGraphPythia8EvtGen_A14_tZ_4fl_tchan_trilepton.deriv.DAOD_SUSY2.e5803_s3126_r9364_r9315_p3387
+and 410560 MadGraphPythia8EvtGen_A14_tZ_4fl_tchan_noAllHad
+
+
+
+Other rare processes:
+mc15_13TeV.407309.Pythia8EvtGen_A14_NNPDF23LO_DPS_W_W_2l.
+mc15_13TeV.410215.aMcAtNloPythia8EvtGen_A14_NNPDF23LO_260000_tWZDR.
+mc15_13TeV.407321.MadGraphPythia8EvtGen_A14NNPDF23LO_ttbarWll.
+
+
+
+
+Non-prompt:
+
+mc16_13TeV:mc16_13TeV.410501.PowhegPythia8EvtGen_A14_ttbar_hdamp258p75_nonallhad (but 410470 requested)
+
+
+
+
+
+
+
+
