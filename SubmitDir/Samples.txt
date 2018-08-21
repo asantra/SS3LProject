@@ -1,0 +1,148 @@
+https://twiki.cern.ch/twiki/bin/view/AtlasProtected/SUSYMC16Samples
+
+https://twiki.cern.ch/twiki/bin/view/AtlasProtected/AtlasProductionGroupMC16a
+
+
+ DAODs should be submitted soon. I will only submit those in the 1st list; the  e5938_e5984 AODs are just the same events for which there was an extra merge step (the e5984) of the EVNT, so you should not analyse them to avoid duplicating the same events.
+
+
+rucio list-dids mc16_13TeV:mc16_13TeV.*Wmunu*DAOD_SUSY2*_s3126_r9781_r9778_p3387/ --filter type=container | sort
+
+Note: 
+(4) the EWK = EW6 samples have 6th order of EWK couplings. these are graphs containing VBS and Higgs and no strong QCD vertices.
+(5) samples without EWK or EW6 in the name (or QCD in the name) have fourth order of EWK couplings. This means also that QCD vertices are involved in these graphs.
+
+
+
+Samples:
+
+3top 304014
+4top 410080
+
+WH 342284
+ZH 342285
+
+tWZ 410217
+410217.aMcAtNloHerwigppEvtGen_UEEE5_CTEQ6L1_CT10ME_260000_tWZDR
+
+
+
+ttH, old samples (not use anymore once the pythia 8 samples are available!) 
+343365,343366,343367
+missing: user.oducu.Rel21_AB21p2p35_v0.343365.aMcAtNloPythia8EvtGen_A14_NNPDF23_NNPDF30ME_ttH125_dilep. MC16d
+
+ttH, new samples
+345875.PhPy8EG_A14NNPDF23_NNPDF30ME_ttH125_hdamp352p5_dilep
+345874.PhPy8EG_A14NNPDF23_NNPDF30ME_ttH125_hdamp352p5_semilep
+
+ 
+tZ 410560
+410560.MadGraphPythia8EvtGen_A14_tZ_4fl_tchan_noAllHad
+
+ttWZ 407321
+407321.MadGraphPythia8EvtGen_A14NNPDF23LO_ttbarWll
+
+ttWW 410081
+MadGraphPythia8EvtGen_A14NNPDF23_ttbarWW
+
+ttV MadGraph 410111-410116
+MadGraphPythia8EvtGen_A14NNPDF23LO_tt*
+
+
+ttV Sherpa_221 410142,410144
+410142.Sherpa_NNPDF30NNLO_ttll_mll5
+410144.Sherpa_NNPDF30NNLO_ttW
+
+
+ttV aMcAtNloPythia8EvtGen 410155,410218-410220,410276-410278
+aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_tt*
+aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_tt*_mll_1_5
+
+
+VVV Sherpa_222 364242,364243,364244,364245,364246,364247,364248  (nominal)
+364242.Sherpa_222_NNPDF30NNLO_WWW_3l3v_EW6
+364243.Sherpa_222_NNPDF30NNLO_WWZ_4l2v_EW6
+364244.Sherpa_222_NNPDF30NNLO_WWZ_2l4v_EW6
+364245.Sherpa_222_NNPDF30NNLO_WZZ_5l1v_EW6
+364246.Sherpa_222_NNPDF30NNLO_WZZ_3l3v_EW6
+364247.Sherpa_222_NNPDF30NNLO_ZZZ_6l0v_EW6
+364248.Sherpa_222_NNPDF30NNLO_ZZZ_4l2v_EW6
+
+
+VVV Sherpa_221, only in MC16a 407311 - 407315  (not to be used)
+407311.Sherpa_221_NNPDF30NNLO_6l0v_EW6
+407312.Sherpa_221_NNPDF30NNLO_5l1v_EW6
+407313.Sherpa_221_NNPDF30NNLO_4l2v_EW6
+407314.Sherpa_221_NNPDF30NNLO_3l3v_EW6
+407315.Sherpa_221_NNPDF30NNLO_2l4v_EW6
+
+
+Not used:
+364336-364339 WWW production
+onshell(!) WWW production with factorised decays to lvlvjj. WARNING: Please do not mix with 364242 as the opposite signed samples already include the 3l3v decay channel. Comibining the 364336-9 samples will give 2l2vjj + 3l3v decays. Use only 364242 for higher statistics in only the 3l3v channel.
+
+
+WW_SS 364286 364287
+364286.Sherpa_222_NNPDF30NNLO_llvvjj_ss_EW4
+364287.Sherpa_222_NNPDF30NNLO_llvvjj_ss_EW6
+
+
+VV 364250,364253,364288,364289
+364250.Sherpa_222_NNPDF30NNLO_llll
+364253.Sherpa_222_NNPDF30NNLO_lllv
+364288.Sherpa_222_NNPDF30NNLO_llll_lowMllPtComplement
+364289.Sherpa_222_NNPDF30NNLO_lllv_lowMllPtComplement
+
+VV EW6 364283,364284
+364283.Sherpa_222_NNPDF30NNLO_lllljj_EW6
+364284.Sherpa_222_NNPDF30NNLO_lllvjj_EW6
+
+
+ggllll 345705,345706
+345705.Sherpa_222_NNPDF30NNLO_ggllll_0M4l130
+345706.Sherpa_222_NNPDF30NNLO_ggllll_130M4l
+
+
+
+
+
+
+
+Wjets 361100-361105
+PowhegPythia8EvtGen_AZNLOCTEQ6L1_Wplus*
+PowhegPythia8EvtGen_AZNLOCTEQ6L1_Wminus*
+
+Wjets 364156-364169 (Wmunu) 364170-364183 (Wenu) 364184-364197 (Wtaunu)
+Sherpa_221_NNPDF30NNLO_W*_MAXHTPTV
+
+
+Zjets 361106-361108
+PowhegPythia8EvtGen_AZNLOCTEQ6L1_Z*
+
+Zjets 364100-364113 (Zee) 364114-364127 (Zmumu) 364128-364141 (Ztautau)
+Sherpa_221_NNPDF30NNLO_Z*_MAXHTPTV*
+
+
+ttbar, HT slices: 407342-407344
+PhPy8EG_A14_ttbarHT
+
+ttbar, MET slices: 407345-407347
+PhPy8EG_A14_ttbarMET
+
+ttbar (nominal)
+410470.PhPy8EG_A14_ttbar_hdamp258p75_nonallhad
+
+ttbar (other, MC16a) -- to not be used
+410501.PowhegPythia8EvtGen_A14_ttbar_hdamp258p75_nonallhad
+
+
+Gtt 370178,375818-375932
+370178.MGPy8EG_A14N_GG_ttn1_2000_5000_1
+375818.MGPy8EG_A14N_GG_ttn1_1100_5000_1
+...
+375932.MGPy8EG_A14N_GG_ttn1_2400_5000_2000
+
+
+
+not available
+mc15_13TeV.407309.Pythia8EvtGen_A14_NNPDF23LO_DPS_W_W_2l.merge.DAOD_SUSY2.e5411_s2726_r7772_r7676_p2879

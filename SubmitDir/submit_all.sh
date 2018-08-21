@@ -12,13 +12,13 @@
 ##### data2015/2016 & MC16a!
 
 
-# python Submit_MC16a_MultiBoson.py
+python Submit_MC16a_MultiBoson.py
 
 # python Submit_MC16a_3and4tSM.py
 
-# python Submit_MC16a_RareMore.py
+python Submit_MC16a_RareMore.py
 
-# python Submit_MC16a_ttH.py
+python Submit_MC16a_ttH.py
 
 # python Submit_MC16a_TTV.py
 
@@ -38,13 +38,13 @@
 
 
 
-# python Submit_MC16d_MultiBoson.py
+python Submit_MC16d_MultiBoson.py
 
 # python Submit_MC16d_3and4tSM.py
 
-# python Submit_MC16d_RareMore.py
+python Submit_MC16d_RareMore.py
 
-# python Submit_MC16d_ttH.py
+python Submit_MC16d_ttH.py
 
 # python Submit_MC16d_TTV.py
 
@@ -53,7 +53,7 @@
 
 # python Submit_MC16d_ttBar.py
 
-python  Submit_MC16d_Vjets.py
+# python  Submit_MC16d_Vjets.py
 
 
 # python Submit_MC16d_SUSY.py

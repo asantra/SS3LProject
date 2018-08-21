@@ -1,51 +1,55 @@
-setupATLAS
-lsetup git
+localSetupDQ2Client --quiet
+localSetupFAX --skipConfirm
 
-git clone https://oducu@gitlab.cern.ch/atlas-phys-susy-wg/Common/SS3Lep.git
+localSetupPandaClient currentJedi --noAthenaCheck
 
-
-
-#### Assume you are in the project folder (SS3LAnalysis)
-
-cd ..
-mkdir build
-cd build/
-setupATLAS
-asetup 21.2,AnalysisBase,r06
-cmake ../SS3LAnalysis
-cmake --build .
+# Needed for grid jobs
+#voms-proxy-init -voms atlas
 
 
 
-#### Or you just 
-
-cd SS3LAnalysis
-source initialize.sh 
-
-
-### when i want to compile
-in build directory:
-cmake --build .
+# Run job standalone:
+python /home/oducu/Rel21/SS3Lep/Run/Run.py --isData 0 --isAtlfast 0 --ismc15c 0 --nevents 100  --inputDS myInputDS 2>&1 | tee logMC 
+(command used by Ximo, not tried!)
 
 
+python /home/oducu/Rel21/SS3Lep/Run/Run.py --isData 0 --isAtlfast 0 --ismc16a 1 --inputDS myInputDS --outputDS notDefault
+python /home/oducu/Rel21/SS3Lep/Run/Run.py --isData 0 --isAtlfast 0 --ismc16d 1 --inputDS myInputDS --outputDS notDefault
 
-#### This is also nececary everytime you changed something and want to compile it!
-#### If you just want to run the code and have nothing to compile, you could also do
-
-source setupframework.sh
+python /home/oducu/Rel21/SS3Lep/Run/Run.py --isData 0 --isAtlfast 0 --ismc16a 1 --nevents 4 --inputDS myInputDS --outputDS notDefault
+python /home/oducu/Rel21/SS3Lep/Run/Run.py --isData 0 --isAtlfast 0 --ismc16d 1 --nevents 4 --inputDS myInputDS --outputDS notDefault
 
 
 
-#### Each time you log in:
+data16_13TeV.00307358.physics_Main.deriv.DAOD_SUSY2.r9264_p3083_p3372
 
-setupATLAS
-cd ../build
-asetup --restore
-source */setup.sh
-
-#### The script will automatically setup the same release as you previously defined in that directory. The --restore option restores the previous setup
+python /home/oducu/Rel21/SS3Lep/Run/Run.py --isData 1 --isData16 1 --inputDS myInputDS --outputDS notDefault
 
 
 
 
-#### Tutorial: https://atlassoftwaredocs.web.cern.ch/ABtutorial/release_setup_change_release/
+# Run on the grid:
+MC:
+python /home/oducu/Rel21/SS3Lep/Run/Run.py --isData 0 --driver grid --inputDS myInputDS --outputDS myOutputDS 
+
+Data:
+python /home/oducu/Rel21/SS3Lep/Run/Run.py --isData 1 --isData15 1 --driver grid --inputDS myInputDS --outputDS myOutputDS
+python /home/oducu/Rel21/SS3Lep/Run/Run.py --isData 1 --isData16 1 --driver grid --inputDS myInputDS --outputDS myOutputDS
+python /home/oducu/Rel21/SS3Lep/Run/Run.py --isData 1 --isData17 1 --driver grid --inputDS myInputDS --outputDS myOutputDS
+
+
+
+
+# rucio how to
+rucio list-dids mc15_13TeV:'*JZ10W*'  --filter datatype=DAOD_IDTIDE |head
+rucio download --nrandom 10 mc15_13TeV:mc15_13TeV.426046.HerwigppEvtGen_UEEE5_CTEQ6L1_jetjet_JZ6W.recon.DAOD_IDTIDE.e4410_s2608_r7618
+
+
+rucio list-dids data17_13TeV:data17_13TeV*SUSY2*p3372/ | sort
+
+
+check for memory leaks:
+
+valgrind --trace-children=yes --num-callers=20 --track-origins=yes --error-limit=no `which python` /home/oducu/Rel21/SS3Lep/Run/Run.py --isData 0 --isAtlfast 0 --ismc16d 1 --nevents 1 --inputDS myInputDS --outputDS notDefault 2>&1 | tee large_valgrind.log
+
+valgrind --trace-children=yes --num-callers=20 --leak-check=full --track-origins=yes --error-limit=no `which python` /home/oducu/Rel21/SS3Lep/Run/Run.py --isData 0 --isAtlfast 0 --ismc16a 1 --nevents 100 --inputDS myInputDS --outputDS notDefault 2>&1 | tee large_valgrind_Mai1_0.log

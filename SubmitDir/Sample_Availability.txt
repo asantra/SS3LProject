@@ -1,0 +1,80 @@
+3top:
+MC16a MC16d 
+
+
+4top:
+MC16a MC16d
+
+
+WH
+MC16a MC16d
+
+
+ZH
+MC16a MC16d
+
+
+tWZ
+MC16a 
+
+
+mc16_13TeV:mc16_13TeV.410408.aMcAtNloPythia8EvtGen_tWZ_Ztoll_minDR1.deriv.DAOD_SUSY2.e6423_e5984_s3126_r10201_r10210_p3563          
+mc16_13TeV:mc16_13TeV.410408.aMcAtNloPythia8EvtGen_tWZ_Ztoll_minDR1.deriv.DAOD_SUSY2.e6423_e5984_s3126_r9364_r9315_p3563
+https://twiki.cern.ch/twiki/bin/view/AtlasProtected/TopDerivationMC15cListOtherTop
+
+
+ttH, Pythia 8
+MC16a MC16d
+
+
+tZ
+MC16a MC16d
+
+
+ttWZ
+MC16a MC16d
+
+
+ttWW
+MC16a MC16d
+
+
+ttV
+Madgraph ttZ MC16a (!!!!!!!!!!!!!!!!!!!!!) not MC16d
+Sherpa MC16a MC16d
+aMcAtNloPythia8 MC16a MC16d
+
+
+VVV
+Sherpa222 MC16a MC16d
+
+
+WW_SS
+EW4 MC16a MC16d
+EW6 MC16a MC16d
+
+VV
+4/3 lep        MC16a MC16d
+4/3 lep_EW6    MC16a MC16d 
+
+gllll MC16a MC16d
+
+
+
+Wjets
+Pythia MC16a MC16d
+Sherpa221 MC16a MC16d
+
+
+Zjets
+Pythia MC16a MC16d
+Sherpa221 MC16a MC16d
+
+
+ttbar (nominal samples)
+MC16a MC16d 
+
+
+gtt
+MC16a MC16d
+
