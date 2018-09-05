@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 import os
 
-tag = "Rel21_AB21p2p35_v0"
+tag = "Rel21_AB21p2p35_cutflow" #MuonBaseline.Eta: 2.5 # was 2.7, but checking for cutflow
 
 
 datasets = [
-'mc16_13TeV:mc16_13TeV.304014.MadGraphPythia8EvtGen_A14NNPDF23_3top_SM.deriv.DAOD_SUSY2.e4324_s3126_r9364_r9315_p3387/',
+# 'mc16_13TeV:mc16_13TeV.304014.MadGraphPythia8EvtGen_A14NNPDF23_3top_SM.deriv.DAOD_SUSY2.e4324_s3126_r9364_r9315_p3387/',
 'mc16_13TeV:mc16_13TeV.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.deriv.DAOD_SUSY2.e4111_s3126_r9364_r9315_p3387/'
 ]
 # Loop over datasets 

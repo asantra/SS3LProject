@@ -22,18 +22,20 @@ Samples:
 WH 342284
 ZH 342285
 
-tWZ 410217
-410217.aMcAtNloHerwigppEvtGen_UEEE5_CTEQ6L1_CT10ME_260000_tWZDR
+tWZ 410408 
+410408.aMcAtNloPythia8EvtGen_tWZ_Ztoll_minDR1
+410217.aMcAtNloHerwigppEvtGen_UEEE5_CTEQ6L1_CT10ME_260000_tWZDR  ==> old, should not be used
 
 
+
+ttH, new samples
+345875.PhPy8EG_A14NNPDF23_NNPDF30ME_ttH125_hdamp352p5_dilep
+345874.PhPy8EG_A14NNPDF23_NNPDF30ME_ttH125_hdamp352p5_semilep
 
 ttH, old samples (not use anymore once the pythia 8 samples are available!) 
 343365,343366,343367
 missing: user.oducu.Rel21_AB21p2p35_v0.343365.aMcAtNloPythia8EvtGen_A14_NNPDF23_NNPDF30ME_ttH125_dilep. MC16d
 
-ttH, new samples
-345875.PhPy8EG_A14NNPDF23_NNPDF30ME_ttH125_hdamp352p5_dilep
-345874.PhPy8EG_A14NNPDF23_NNPDF30ME_ttH125_hdamp352p5_semilep
 
  
 tZ 410560
