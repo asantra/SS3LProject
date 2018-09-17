@@ -1,0 +1,52 @@
+-----  DiLepton package   -----
+Packages contains diLepton main code, based on SUSYAnalysisExample for xAOD analyses.
+Runs with RootCore 2.4.29 & SUSYTools tag SUSYTools-00-08-58
+
+Contact: Fabio Cardillo  <fabio.cardillo@cern.ch>
+
+---- HowTo ----
+#Create BaseDir
+mkdir SS3L
+cd SS3L
+
+# check out package:
+svn co svn+ssh://$USER@svn.cern.ch/reps/atlas-fcardill/DiLepton DiLepton
+
+# setup ATLAS software
+export ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase
+source ${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh
+
+# setup AnalysisBase
+lsetup "rcsetup Base,2.4.29"
+
+# check out SUSYTools  
+rc checkout_pkg $SVNOFF/PhysicsAnalysis/SUSYPhys/SUSYTools/tags/SUSYTools-00-08-58
+
+# check out additional packages
+rc checkout SUSYTools/doc/packages.txt
+
+# check out LHAPDF package (obsolete)
+#rc checkout_pkg $SVNOFF/AsgExternal/Asg_Lhapdf/tags/Asg_Lhapdf-06-01-05-01
+
+# check out trigger SF tool (obsolete)
+#rc checkout_pkg $SVNOFF/Trigger/TrigAnalysis/TrigGlobalEfficiencyCorrection/trunk
+
+# check out JetReclustering package
+git clone https://github.com/kratsg/JetReclustering.git
+
+#Things to be modified (only if needed for PDF error)
+# -- LHAPDF:             Check out additional "cteq", "NNPDF" and "CT10" pdf sets
+
+
+-----  To compile  -----
+cd DiLepton
+source scripts/setup.sh  "-root" #(this script will setup RootCore & required ATLASClients directly)
+
+-----   For help   -----
+python scripts/run.py --help
+python launch_jobs.py --help
+
+-----  To run jobs  -----
+python scripts/run.py (for single test runs) 
+python launch_jobs.py --DQ2=datasets.dq2 --Suffix="_SUF" (to run on a dq2 list of datasets)
+

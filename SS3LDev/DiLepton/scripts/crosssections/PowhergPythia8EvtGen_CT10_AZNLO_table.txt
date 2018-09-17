@@ -1,0 +1,15 @@
+341449  PowhegPythia8EvtGen_CT10_AZNLO_ZH125J_MINLO_eeWWlvlv_VpT        0.02453100      1.00000         1.00000         1.00000
+341450  PowhegPythia8EvtGen_CT10_AZNLO_ZH125J_MINLO_eeWWlvqq_VpT        0.02428600      1.00000         0.43745         1.00000
+341451  PowhegPythia8EvtGen_CT10_AZNLO_ZH125J_MINLO_mumuWWlvlv_VpT      0.02453600      1.00000         1.00000         1.00000
+341453  PowhegPythia8EvtGen_CT10_AZNLO_ZH125J_MINLO_tautauWWlvlv_VpT    0.02490000      1.00000         1.00000         0.99992
+341454  PowhegPythia8EvtGen_CT10_AZNLO_ZH125J_MINLO_tautauWWlvqq_VpT    0.02467300      1.00000         0.43681         0.99991
+341455  PowhegPythia8EvtGen_CT10_AZNLO_ZH125J_MINLO_veveWWlvlv_VpT      0.04775700      1.00000         1.00000         0.45734
+341456  PowhegPythia8EvtGen_CT10_AZNLO_ZH125J_MINLO_veveWWlvqq_VpT      0.04792300      1.00000         0.44058         0.45242
+341457  PowhegPythia8EvtGen_CT10_AZNLO_ZH125J_MINLO_vmuvmuWWlvlv_VpT    0.04777200      1.00000         1.00000         0.46150
+341458  PowhegPythia8EvtGen_CT10_AZNLO_ZH125J_MINLO_vmuvmuWWlvqq_VpT    0.04791200      1.00000         0.43925         0.45264
+341462  PowhegPythia8EvtGen_CT10_AZNLO_ZH125J_MINLO_qqWWlvqq_VpT        0.00008918      1.00000         0.45434         0.00000
+410062  PowhegPythiaEvtGen_P2012_Wt_DS_inclusive_top                    32.38400000     1.00000         1.00000         0.03437
+410063  PowhegPythiaEvtGen_P2012_Wt_DS_inclusive_antitop                32.35700000     1.00000         1.00000         0.09593
+410064  PowhegPythiaEvtGen_P2012_Wt_DS_dilepton_top                     3.41330000      1.00000         1.00000         0.03021
+410065  PowhegPythiaEvtGen_P2012_Wt_DS_dilepton_antitop                 3.40900000      1.00000         1.00000         0.03089
+304014  MadGraphPythia8EvtGen_A14NNPDF23_3top_SM                        0.00163980      1.00000         1.00000         0.00549

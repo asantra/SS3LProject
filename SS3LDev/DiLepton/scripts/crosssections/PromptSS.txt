@@ -1,0 +1,41 @@
+# ttX + rare
+410050  MadGraphPythiaEvtGen_tZ_4fl_tchan_noAllHad		0.24013		1.	1. 1.
+410066  MadGraphPythia8EvtGen_A14NNPDF23LO_ttW_Np0              0.17656         1.247   1. 1.
+410067  MadGraphPythia8EvtGen_A14NNPDF23LO_ttW_Np1              0.14062         1.247   1. 1.
+410068  MadGraphPythia8EvtGen_A14NNPDF23LO_ttW_Np2              0.13680         1.247   1. 1.
+410080	MadGraphPythia8EvtGen_A14NNPDF23_4topSM			0.0091622	1.	1. 1.
+410081  MadGraphPythia8EvtGen_A14NNPDF23_ttbarWW                0.0080975       1.2231  1. 1.
+410111  MadGraphPythia8EvtGen_A14NNPDF23LO_ttee_Np0             0.0088155       1.20    1. 1.
+410112  MadGraphPythia8EvtGen_A14NNPDF23LO_ttee_Np1             0.01438         1.20    1. 1.
+410113  MadGraphPythia8EvtGen_A14NNPDF23LO_ttmumu_Np0           0.0088422       1.20    1. 1.
+410114  MadGraphPythia8EvtGen_A14NNPDF23LO_ttmumu_Np1           0.014375        1.20    1. 1.
+410115  MadGraphPythia8EvtGen_A14NNPDF23LO_tttautau_Np0         0.0090148       1.20    1. 1.
+410116  MadGraphPythia8EvtGen_A14NNPDF23LO_tttautau_Np1         0.014636        1.20    1. 1.
+304014  MadGraphPythia8EvtGen_3top_SM				0.0016398	1.	1. 1.
+# ttH
+341177 aMcAtNloHerwigppEvtGen_UEEE5_CTEQ6L1_CT10ME_ttH125_dil	  0.5085 1.0 0.10554 1
+341270 aMcAtNloHerwigppEvtGen_UEEE5_CTEQ6L1_CT10ME_ttH125_semilep 0.5085 1.0 0.43929 1
+341271 aMcAtNloHerwigppEvtGen_UEEE5_CTEQ6L1_CT10ME_ttH125_allhad  0.5085 1.0 0.45517 1
+# VH
+342284 Pythia8EvtGen_A14NNPDF23LO_WH125_inc		1.1021 1.25215497686	1.	1.
+342285 Pythia8EvtGen_A14NNPDF23LO_ZH125_inc		0.6007 1.44759621787	1.	1.
+# Diboson
+361063	Sherpa_CT10_llll		12.583		0.91	1.	1.
+361064	Sherpa_CT10_lllvSFMinus		1.8446		0.91	1.	1.
+361065	Sherpa_CT10_lllvOFMinus		3.6235		0.91	1.	1.
+361066	Sherpa_CT10_lllvSFPlus		2.5656		0.91	1.	1.
+361067	Sherpa_CT10_lllvOFPlus		5.0169		0.91	1.	1.
+361069	Sherpa_CT10_llvvjj_ss_EW4	0.025765	0.91	1.	1.
+361070	Sherpa_CT10_llvvjj_ss_EW6	0.043375	0.91	1.	1.
+361071	Sherpa_CT10_lllvjj_EW6		0.042017	0.91	1.	1.
+361072	Sherpa_CT10_lllljj_EW6		0.1279		0.91	1.	1.
+361073	Sherpa_CT10_ggllll		0.02095		0.91	1.	1.
+# Leptonic triboson
+361620	Sherpa_CT10_WWW_3l3v	0.008343	1.	1.	1.
+361621	Sherpa_CT10_WWZ_4l2v	0.001734	1.	1.	1.
+361622	Sherpa_CT10_WWZ_2l4v	0.0034299 	1.	1.	1.
+361623	Sherpa_CT10_WZZ_5l1v	0.00021783	1.	1.	1.
+361624	Sherpa_CT10_WZZ_3l3v	0.0019248	1.	0.44444	1.
+361625	Sherpa_CT10_ZZZ_6l0v	1.7059e-05	1.	1.	1.
+361626	Sherpa_CT10_ZZZ_4l2v	0.00044125	1.	0.22542	1.
+361627	Sherpa_CT10_ZZZ_2l4v	0.0004453	1.	0.44815	1.

@@ -1,0 +1,259 @@
+2017-24-03 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Updated to SUSYTools-00-08-58, AnalysisBase 2.4.29
+	* Fixed electron truth-flag
+	
+2017-28-02 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Changed OR in config file
+	* Added CFT cut to signal electron requirement
+	* Updated samples
+	* Updated PRW file for signals
+	
+2017-23-02 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Updated to SUSYTools-00-08-54
+	* Added chargeflip SF + unc.
+	* Updated triggerSF tool
+	* Removed obsolete histograms
+	* Added truth info for leptons
+	
+2017-18-02 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Updated to SUSYTools-00-08-53, AnalysisBase 2.4.28
+	* Updated GRL, ilumicalc file
+	* Added extended PRW file for Moriond
+	* Added makeTex function to plotSR.py
+	* Added tt2stepTN2 signal list
+	
+2017-07-02 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Updated to SUSYTools-00-08-46, AnalysisBase 2.4.26
+	* Updated samples to p2949
+	* Updated PRW file for bkg
+	* Updated b-tag CDI file
+	* Added infos for VR
+	
+2017-28-01 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Updated to SUSYTools-00-08-40, AnalysisBase 2.4.25
+	* Updated PRW file for bkg & signal
+	* Enabled MCShowerType for MC/MC SF
+	* Added ChargeFlip info for 2 WP for baseline electrons
+
+2016-20-12 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Changed some python minorities
+	* Set lepton pt cut to (10,10)
+	* Updated all samples to p2879
+	
+2016-10-11 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Updated to SUSYTools-00-08-12, AnalysisBase 2.4.21
+	* Added full 2016 GRL, lumicalc
+	* Added ChargeFlipTool
+	* Updated signal/background samples
+	* Updated object definitions
+	
+2016-29-07 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Updated signal lists
+	* Removed obsolete files
+	
+2016-19-07 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Updated to SUSYTools-00-07-89, AnalysisBase 2.4.15
+	* Added new GRL
+	
+2016-09-07 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Updated to SUSYTools-00-07-84, AnalysisBase 2.4.14
+	* Updated sample list
+	* Updated JetReclustering package
+	* Updated triggerSF tool
+	
+2016-24-06 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Updated to SUSYTools-00-07-77, AnalysisBase 2.4.12
+	* Added 2015/16 trigger handling
+	* Updated GRL, lumiclac
+	* Added tWZ sample
+	
+2016-16-06 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Added 2015 GRL, lumicalc for reprocessed data
+	
+2016-09-06 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Updated to SUSYTools-00-07-70, AnalysisBase 2.4.11
+	* Added mc15c signal samples
+	* Deleted some obsolete samples
+	* Added Jvt SF
+	* Updated for DS1 GRL, ilumiclac
+	* Updated reduced egamma NPSet
+	
+2016-31-05 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Added PileUpHash branch
+	
+2016-19-05 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Updated to SUSYTools-00-07-57, AnalysisBase 2.4.8
+	* Added mc15c prw file
+	* Added data16_13TeV GRL
+	* Added GetFatJets() for jetR1 collection
+	
+2016-04-04 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Added jet reclustering
+	* Added W-tag information
+	* Updated Background and Signal sampes
+	* Added Truth information for jet origin
+	
+2016-01-02 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Added scripts for trigger eff. plots
+	* Added MC15b ttZ MC samples
+	
+2016-24-01 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Added C scripts to repository
+	* Added SR with most inclusive meff,met cuts
+	
+2016-20-01 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Updated Electron SF
+	* Added pdgID of gluino decay
+	* Updated list of datasets
+	
+2015-18-12 Fabio Cardillo <fabio.cardillo@cern.ch>
+	* Updated to SUSYTool-00-07-17, AnalysisBase 2.3.38
+	* Added mc15b sample list
+	
+2015-06-12 Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Added mc15b configuration
+	
+2015-30-11 Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Updated to SUSYTools-00-07-09, AnalysisBase 2.3.37
+	* Updated Muon trigger SF
+	* Updated LHAPDF package
+	
+2015-25-11 Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Updated to SUSYTools-00-07-04, AnalysisBase 2.3.36
+	* Added trigger SF
+	* Added config file
+	
+2015-16-11 Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Added Trigger matching
+	* Updated for SUSYTools-00-06-27-12, AnalysisBase 2.3.34
+	* Set Electron ID fallback
+	
+2015-16-11 Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Added branches for tt+V Validation Regions
+	* Added trigger SF tool
+	
+2015-06-11 Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Added met trigger
+	* Added photons to met
+	* Removed kWarning msg
+	
+2015-30-10 Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Removed photon systematics
+	* Removed obsolete functions
+	* Updated SR handling
+	* Updated JES parameter set
+	
+2015-29-10 Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Updated to SUSYTools-00-06-27-05, AnalysisBase 2.3.32
+	* Fixed cteq6 PDF uncertainty
+	
+2015-28-10 Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Updated data-lists, GRL, lumi-files
+	* Added CT10, CTEQ config to pdfError
+	* Added MET trigger
+	
+2015-26-10  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Added Asg_Boost, Asg_Lhapdf
+	* Added PDF uncertainties
+	* Updated handling of systematics
+	
+2015-14-10  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Updates for 25ns MC
+	* Update handling of systematic variations
+	* Added trigger informaton to TTree
+	
+2015-07-10  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Added systematics variations
+	* Updated python scripts
+	* Updated signal xSec files
+	
+2015-01-10  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Updated for ST-00-06-24-01, AnalysisBase 2.3.26
+	* Fixed PRW
+	
+2015-01-09  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Fixed event-count for DxAOD
+	* Updated python and plotting scripts
+	
+2015-17-08  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Updated for ST-00-06-22, Base 2.3.23
+	* Added additional systematics
+	
+2015-13-08  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Fixed event-count for DxAOD
+	* Added custom isolation WP
+	* Added custom pileup reweighting tool
+	
+2015-29-07  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Update for ST-00-06-17, Base 2.3.21
+	* Added systematics weights to tree
+	* Fixed channel definition
+	
+2015-17-07  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Fixed and extended TTree
+
+2015-15-07  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Update for SUSYTools-00-06-15-02, AnalysisBase 2.3.19
+	* Added PileupReweighting
+	
+2015-29-06  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Update for cutflow
+	* Added new signal samples
+	
+2015-25-06  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Updated signal lepton treatment
+	* Updated for SUSYTools-00-06-12-01, AnalysisBase 2.3.15
+	
+2015-06-06  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Updated same-sign selection
+	* Added eta-acceptance function
+	* Updated background list
+	* Fixed some errors
+	
+2015-27-05  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Updated to SUSYTools-00-06-07, AnalysisBase 2.3.12
+	* Updated DQ2 list 
+
+2015-14-05  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Added additional signal regions for lepton pairing
+	* Updated to SUSYTools-00-06-05, AnalysisBase 2.3.11
+	* Added new signal lepton selection
+	* Updated DQ2 list
+	
+2015-31-03  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Updated to SUSYTools-00-06-03, AnalysisBase 2.3.8
+	* Added experimental electron trigger-matching
+	
+2015-25-03  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Added trigger-matching for muons
+	
+2015-19-03  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Added trigger readout
+	* Updated for SUSYTools_v6/mc15 
+
+2015-07-03  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Added efficiency SF for leptons and b-jets
+	* Optimized Signal Region loop
+
+2015-04-03  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Updated for ST-00-05-00-21, AnalysisBase 2.1.27
+	* Added signal jet decoration
+	* Updated submission scripts
+
+2015-23-02  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Added TTree to output
+	* Fixed cosmics veto
+
+2015-19-02  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Added dynamic cuts for different SR
+
+2015-17-02  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Configured run.py for grid submission
+
+2015-13-02  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Added basic diLepton cuts
+
+2015-31-01  Fabio Cardillo  <fabio.cardillo@cern.ch>
+	* Creation of the package
+	* First import of diLepton code
+
