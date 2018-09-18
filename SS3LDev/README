@@ -1,0 +1,84 @@
+https://atlassoftwaredocs.web.cern.ch/gittutorial/svn-migrate/
+http://rogerdudler.github.io/git-guide/
+
+
+############### 
+setupATLAS
+lsetup git
+
+
+git clone https://oducu@gitlab.cern.ch/atlas-phys-susy-wg/Common/SS3Lep.git
+cd SS3LEP
+git tag -l
+git checkout tags/<tag_name>
+
+
+modify SS3Lep/SS3LAnalysis/SS3LAnalysis/scripts/Run.py file to point to your workdir & files
+(search for "oducu" to see the lines you should change)
+
+
+############### if you want to make changes in the framework:
+
+git add *
+git status
+git commit
+git push -u origin master
+
+
+############### if you want to create a tag:
+
+https://git-scm.com/book/en/v2/Git-Basics-Tagging
+git tag 1.0.0 6831ed70
+git tag
+git push origin 1.0.0
+
+
+
+
+
+#### Assume you are in the project folder (SS3LAnalysis)
+
+cd ..
+mkdir build
+cd build/
+setupATLAS
+asetup 21.2,AnalysisBase,r06
+cmake ../SS3LAnalysis
+cmake --build .
+
+
+
+#### Or you just 
+
+cd SS3LAnalysis
+source initialize.sh 
+
+
+### when you want to compile
+in build directory:
+cmake --build .
+
+
+
+#### This is also nececary everytime you changed something and want to compile it!
+#### If you just want to run the code and have nothing to compile, you could also do
+
+source setupframework.sh
+
+
+
+#### Each time you log in:
+
+setupATLAS
+cd ../build
+asetup --restore
+source */setup.sh
+
+#### The script will automatically setup the same release as you previously defined in that directory. The --restore option restores the previous setup
+
+#### Input datasets must be in the same format folder as they were downloaded and the run.py script should point to it, i.e.
+mc16_13TeV.410080.MadGraphPythia8EvtGen_A14NNPDF23_4topSM.deriv.DAOD_SUSY2.e4111_s3126_r9364_r9315_p3387/
+
+
+
+#### Tutorial: https://atlassoftwaredocs.web.cern.ch/ABtutorial/release_setup_change_release/
