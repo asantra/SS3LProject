@@ -538,11 +538,11 @@ EL::StatusCode DiLepton :: initialize (){
   //ANA_CHECK( SusyObjTool->setBoolProperty("AutoconfigurePRWTool", true ) );  
   Info("PileupReweighting", "Adding lumicalc files");
   //if (configYear==2015 || configYear==2016) {
-  //  PileUpLumiCalc.push_back(lumiPath+"PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root"); //2015 data
-  //  PileUpLumiCalc.push_back(lumiPath+"PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root");  /// 2016 data
+    PileUpLumiCalc.push_back(lumiPath+"PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root"); //2015 data
+    PileUpLumiCalc.push_back(lumiPath+"PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root");  /// 2016 data
   //}
   //if (configYear==2017){
-    PileUpLumiCalc.push_back(lumiPath+"physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root"); //2017 data
+  //  PileUpLumiCalc.push_back(lumiPath+"physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root"); //2017 data
   //}
 
   //Set shower type
@@ -658,17 +658,11 @@ EL::StatusCode DiLepton :: initialize (){
     Error(APP_NAME, "Cannot set triggers" );
     return EL::StatusCode::FAILURE;
   }
-  //if( !this->setTriggers(triggerList2016, TriggerName, "DILEPTON_MET", 2016) ){
-  if( !this->setTriggers(triggerList2016, "DILEPTON_MET", 2016) ){
+  if( !this->setTriggers(triggerList2016, TriggerName, 2016) ){
     Error(APP_NAME, "Cannot set triggers" ); 
     return EL::StatusCode::FAILURE;
   }
-  if( !this->setTriggers(triggerList2017_UNPS, "DILEPTON_MET", 2017) ){
-  //if( !this->setTriggers(triggerList2017_UNPS, TriggerName, "DILEPTON_MET", 2017) ){
-    Error(APP_NAME, "Cannot set triggers" );
-    return EL::StatusCode::FAILURE;
-  }
-  if( !this->setTriggers(triggerList2017_PS, "DILEPTON_MET_PRESCALED", 2017) ){
+  if( !this->setTriggers(triggerList2017, TriggerName, 2017) ){
     Error(APP_NAME, "Cannot set triggers" );
     return EL::StatusCode::FAILURE;
   }
@@ -1103,7 +1097,6 @@ EL::StatusCode DiLepton :: execute (){
       if(Debug){std::cout << APP_NAME << " DEBUG \t EtMiss " << EtMiss << "  EtMissPhi " << EtMissPhi << std::endl;}
 
       //Pass trigger
-      //bool passTrigger = false;
       bool passTrigger = true;
       switch( configYear ){
         case 2015:
@@ -1115,30 +1108,8 @@ EL::StatusCode DiLepton :: execute (){
           if( !isTriggeredMet2016(triggerList2016, EtMiss, triggerInfo, dataPeriod) ) passTrigger = false; 
           break;
         case 2017:
-          //if (eventrunNumber>=327103 && eventrunNumber<=328374){ //prescaled
-          //  if(Debug){std::cout << "Prescaled::RunNumber: " << eventrunNumber << std::endl;}
-          //  if(SusyObjTool->IsTrigPassed("HLT_2e24_lhvloose_nod0") ||
-          //      SusyObjTool->IsTrigPassed("HLT_e17_lhloose_nod0_mu14") ||
-          //      SusyObjTool->IsTrigPassed("HLT_mu22_mu8noL1") ||
-          //     (EtMiss>250000 && SusyObjTool->IsTrigPassed("HLT_xe110_pufit_L1XE55"))) passTrigger = true;
-          //}
-          //if (eventrunNumber<327103 || eventrunNumber>328374){ //unprescaled
-          //  if(Debug){std::cout << "Unprescaled::RunNumber: " << eventrunNumber << std::endl;}
-          //  if(SusyObjTool->IsTrigPassed("HLT_2e24_lhvloose_nod0") ||
-          //      SusyObjTool->IsTrigPassed("HLT_2e17_lhvloose_nod0_L12EM15VHI") ||
-          //      SusyObjTool->IsTrigPassed("HLT_e17_lhloose_nod0_mu14") ||
-          //      SusyObjTool->IsTrigPassed("HLT_mu22_mu8noL1") ||
-          //      (EtMiss>250000 && SusyObjTool->IsTrigPassed("HLT_xe110_pufit_L1XE55"))) passTrigger = true;
-          //}
-          //break;
-          if (eventrunNumber<326834 || eventrunNumber>328393){ //unprescaled
-            if( !isTriggered(triggerList2017_UNPS, triggerInfo) ) passTrigger = false;
-            if( !isTriggeredMet(triggerList2017_UNPS, triggerInfo) ) passTrigger = false;
-          }
-          if (eventrunNumber>=326834 && eventrunNumber<=328393){ //prescaled
-            if( !isTriggered(triggerList2017_PS, EtMiss, triggerInfo) ) passTrigger = false;
-            if( !isTriggeredMet(triggerList2017_PS, EtMiss, triggerInfo) ) passTrigger = false;
-          }
+          if( !isTriggered(triggerList2017, triggerInfo) ) passTrigger = false;
+          if( !isTriggeredMet(triggerList2017, EtMiss, triggerInfo) ) passTrigger = false;
           break;
         default: break;
       }
@@ -2110,11 +2081,11 @@ bool DiLepton :: setTriggers(std::vector<std::string> &trigList, std::string tri
 
   int eventrunNumber = SusyObjTool->GetRunNumber();  
 
-  //if (option==2017){
-  //  if (eventrunNumber>=327103 && eventrunNumber<=328374) trigname="DILEPTON_MET_PRESCALED"; 
-  //  //if (eventrunNumber>=326834 && eventrunNumber<=328393) trigname="DILEPTON_MET_PRESCALED"; 
-  //  else trigname="DILEPTON_MET";
-  //}
+  if (option==2017){
+    if (eventrunNumber>=327103 && eventrunNumber<=328374) trigname="DILEPTON_MET_PRESCALE"; 
+    //if (eventrunNumber>=326834 && eventrunNumber<=328393) trigname="DILEPTON_MET_PRESCALE"; 
+    else trigname="DILEPTON_MET";
+  }
 
 
   if(Debug){std::cout << "Trigname: " << trigname << std::endl;}
@@ -2174,7 +2145,7 @@ bool DiLepton :: setTriggers(std::vector<std::string> &trigList, std::string tri
   }
 
   // Use when L1_2EM15VHI is prescaled
-  if(trigname=="DILEPTON_MET_PRESCALED"){
+  if(trigname=="DILEPTON_MET_PRESCALE"){
     switch(option){
       case 2017:
         trigList.push_back("HLT_2e24_lhvloose_nod0"); 
