@@ -114,6 +114,7 @@ bool DiLepton :: InitializeHistograms (){
     for(unsigned int sys(0); sys<NSys; sys++){
       TString SYSsuf = sys ? "_"+(TString)(this->getSysNames(SysInfoList_K)).at(sys) : "";
 
+
       hEvents[sr][sys]        = new TH1F("hEvents"+SRsuf+SYSsuf,  "hEvents"+SRsuf+SYSsuf, 10, 0, 10);
       hEventWeight[sr][sys]   = new TH1F("hEventWeight"+SRsuf+SYSsuf, "hEventWeight"+SRsuf+SYSsuf, 100, 0, 1000);
       hEventWeightSF[sr][sys] = new TH1F("hEventWeightSF"+SRsuf+SYSsuf, "hEventWeightSF"+SRsuf+SYSsuf, 100, 0, 1000);
@@ -301,6 +302,7 @@ bool DiLepton :: InitializeTree() {
       DiLeptonTree[sr][sys]->Branch("TriggerSF",    &triggerSF);
       DiLeptonTree[sr][sys]->Branch("ChargeFlipSF", &chargeFlipSF);
       DiLeptonTree[sr][sys]->Branch("TotalWeight",  &weight);
+      DiLeptonTree[sr][sys]->Branch("mcWeightVariations",  &mcWeightVariations);
       DiLeptonTree[sr][sys]->Branch("EtMiss",       &EtMiss);
       DiLeptonTree[sr][sys]->Branch("EtMissPhi",    &EtMissPhi);
       DiLeptonTree[sr][sys]->Branch("Meff",         &meff);
@@ -353,6 +355,8 @@ bool DiLepton :: InitializeTree() {
       DiLeptonTree[sr][sys]->Branch("jetD12_R1",    &jetD12_R1);
       DiLeptonTree[sr][sys]->Branch("muCharges",    &muCharges);
       DiLeptonTree[sr][sys]->Branch("elCharges",    &elCharges);
+      DiLeptonTree[sr][sys]->Branch("muCharges_GL", &muCharges_GL);
+      DiLeptonTree[sr][sys]->Branch("elCharges_GL", &elCharges_GL);
       DiLeptonTree[sr][sys]->Branch("muSF",         &muSF);
       DiLeptonTree[sr][sys]->Branch("elSF",         &elSF);
       DiLeptonTree[sr][sys]->Branch("jetMV2",       &jetMV2);
@@ -385,6 +389,8 @@ bool DiLepton :: InitializeTree() {
         DiLeptonTree[sr][sys]->Branch("jetD12_R1",    &jetD12_R1);
         DiLeptonTree[sr][sys]->Branch("muCharges",    &muCharges);
         DiLeptonTree[sr][sys]->Branch("elCharges",    &elCharges);
+        DiLeptonTree[sr][sys]->Branch("muCharges_GL", &muCharges_GL);
+        DiLeptonTree[sr][sys]->Branch("elCharges_GL", &elCharges_GL);
         DiLeptonTree[sr][sys]->Branch("muSF",         &muSF);
         DiLeptonTree[sr][sys]->Branch("elSF",         &elSF);
         DiLeptonTree[sr][sys]->Branch("jetMV2",       &jetMV2);
@@ -398,7 +404,9 @@ bool DiLepton :: InitializeTree() {
   std::cout<<"Create cutflow txt file"<<std::endl;
   //std::ofstream cutflow_file;
   cutflow_file_trig.open("list_events_trig.txt");
+  cutflow_file_baseline.open("list_events_baseline.txt");
   cutflow_file_all.open("list_events_sig_all.txt");
+  cutflow_file_SS.open("list_events_sig_SS.txt");
   cutflow_file_ee.open("list_events_sig_ee.txt");
   cutflow_file_emu.open("list_events_sig_emu.txt");
   cutflow_file_mumu.open("list_events_sig_mumu.txt");
@@ -530,11 +538,11 @@ EL::StatusCode DiLepton :: initialize (){
   //ANA_CHECK( SusyObjTool->setBoolProperty("AutoconfigurePRWTool", true ) );  
   Info("PileupReweighting", "Adding lumicalc files");
   //if (configYear==2015 || configYear==2016) {
-    PileUpLumiCalc.push_back(lumiPath+"PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root"); //2015 data
-    PileUpLumiCalc.push_back(lumiPath+"PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root");  /// 2016 data
+  //  PileUpLumiCalc.push_back(lumiPath+"PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root"); //2015 data
+  //  PileUpLumiCalc.push_back(lumiPath+"PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root");  /// 2016 data
   //}
   //if (configYear==2017){
-  //  PileUpLumiCalc.push_back(lumiPath+"physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root"); //2017 data
+    PileUpLumiCalc.push_back(lumiPath+"physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root"); //2017 data
   //}
 
   //Set shower type
@@ -603,7 +611,11 @@ EL::StatusCode DiLepton :: initialize (){
 
   //SignalRegions(Name, Nj, Nb, NbMax, pT(j), MET, Meff, pairing)
   SignalRegions.clear();
-  this->addSR("SRall",   0,  0, -1,  25,       0.,       0., "2L+1"); 
+  this->addSR("SRall",    0,  0, -1,  0,       0.,       0., "2L+1"); 
+  this->addSR("SR1b-e",   6,  1, -1,  25,  150000.,  600000., "2L+1");
+  this->addSR("SR0b-c",   6,  0, -1,  25,  150000.,      0., "2L+1");
+  this->addSR("SR1b1-f",  0,  1, -1,  25,  150000.,  750000., "2L+1");
+  this->addSR("SR3b2-i",  6,  3, -1,  25,  250000., 1200000., "2L+1");  
   this->addSR("SR1b1",   6,  1, -1,  25,  150000.,  600000., "2L+1");
   this->addSR("SR1b2",   6,  1, -1,  25,  250000., 1250000., "2L+1");
   this->addSR("SR3b1",   6,  3, -1,  25,  150000.,  750000., "2L+1");
@@ -646,11 +658,17 @@ EL::StatusCode DiLepton :: initialize (){
     Error(APP_NAME, "Cannot set triggers" );
     return EL::StatusCode::FAILURE;
   }
-  if( !this->setTriggers(triggerList2016, TriggerName, 2016) ){
+  //if( !this->setTriggers(triggerList2016, TriggerName, "DILEPTON_MET", 2016) ){
+  if( !this->setTriggers(triggerList2016, "DILEPTON_MET", 2016) ){
     Error(APP_NAME, "Cannot set triggers" ); 
     return EL::StatusCode::FAILURE;
   }
-  if( !this->setTriggers(triggerList2017, TriggerName, 2017) ){
+  if( !this->setTriggers(triggerList2017_UNPS, "DILEPTON_MET", 2017) ){
+  //if( !this->setTriggers(triggerList2017_UNPS, TriggerName, "DILEPTON_MET", 2017) ){
+    Error(APP_NAME, "Cannot set triggers" );
+    return EL::StatusCode::FAILURE;
+  }
+  if( !this->setTriggers(triggerList2017_PS, "DILEPTON_MET_PRESCALED", 2017) ){
     Error(APP_NAME, "Cannot set triggers" );
     return EL::StatusCode::FAILURE;
   }
@@ -701,11 +719,12 @@ EL::StatusCode DiLepton :: initialize (){
 
   //Initialize ChargeFlipTools
   Info(APP_NAME, "Initializing Tool[Medium,Loose]: \t %s", "ElectronChargeIDSelectorTool");
+  //std::string trainFile = PathResolverFindCalibFile("ElectronPhotonSelectorTools/ChargeID/ECIDS_20180731rel21Summer2018.root");
+  std::string trainFile = PathResolverFindCalibFile("ElectronPhotonSelectorTools/ChargeID/ECIDS_20161125for2017Moriond.root");
+  float BDT_OP(0.);
   CFTool = new AsgElectronChargeIDSelectorTool("ChargeFlipToolMedium");
   CFTool->msg().setLevel( MSG::WARNING );
   //std::string trainFile = "$ROOTCOREBIN/data/ElectronPhotonSelectorTools/ECIDS_20161125for2017Moriond.root";
-  std::string trainFile = PathResolverFindCalibFile("ElectronPhotonSelectorTools/ChargeID/ECIDS_20161125for2017Moriond.root");
-  float BDT_OP(0.);
   ANA_CHECK( CFTool->setProperty("TrainingFile", trainFile) );
   ANA_CHECK( CFTool->setProperty("WorkingPoint", "MediumLHElectron"));
   ANA_CHECK( CFTool->setProperty("CutOnBDT", BDT_OP) );
@@ -794,16 +813,12 @@ EL::StatusCode DiLepton :: execute (){
   EventNumber = eventInfo->eventNumber();
   IntPerX = SusyObjTool->GetCorrectedAverageInteractionsPerCrossing();
   //if (
-  //    EventNumber!=20637  &&
-  //    EventNumber!=66846  &&
-  //    EventNumber!=89305  &&
-  //    EventNumber!=158083 &&
-  //    EventNumber!=28894  &&
-  //    EventNumber!=62931  &&
-  //    EventNumber!=163911 &&
-  //    EventNumber!=174730 &&
-  //    EventNumber!=177605  
-  //    ) {return true;}
+  //    EventNumber!=181614 &&
+  //    EventNumber!=182196 &&
+  //    EventNumber!=189358 &&
+  //    EventNumber!=195368 &&
+  //    EventNumber!=196354
+  // ) {return true;}
 
 
   //Getting informations on lumi block and average pile-up (mainly for trigger studies) PT-04-07-'18
@@ -812,6 +827,8 @@ EL::StatusCode DiLepton :: execute (){
 
   MCId = isMC ? eventInfo->mcChannelNumber() : 0;  
   EventWeight = isMC ? (eventInfo->mcEventWeights()).at(0) : 1.;
+
+
   //if(EventNumber!=59956 && EventNumber!=59983)
   //return EL::StatusCode::SUCCESS;
 
@@ -875,6 +892,7 @@ EL::StatusCode DiLepton :: execute (){
       // Clear all variables
       weight = EventWeightPileUp;
       SysWeights.clear();
+      mcWeightVariations.clear();
       PDFWeights.clear();
       CFTWeights.clear();
       //TrigWeights.clear();      
@@ -884,6 +902,9 @@ EL::StatusCode DiLepton :: execute (){
       muTLV.clear();
       elTLV.clear();
       lepTLV.clear();
+      muTLV_GL.clear();
+      elTLV_GL.clear();
+      lepTLV_GL.clear();
       lepTLV_BL.clear();
       jetTLV.clear();
       jetBtag.clear();
@@ -901,6 +922,12 @@ EL::StatusCode DiLepton :: execute (){
       elQualities.clear();
       muQualities.clear();
       lepQualities.clear();
+      muCharges_GL.clear();
+      elCharges_GL.clear();
+      lepCharges_GL.clear();
+      elQualities_GL.clear();
+      muQualities_GL.clear();
+      lepQualities_GL.clear();
       jetQualities.clear();
       lepCFmedium.clear();
       lepCFloose.clear();
@@ -929,6 +956,8 @@ EL::StatusCode DiLepton :: execute (){
       el_3rdPt  = 0;
       el_1stEta = 0;
       el_2ndEta = 0;
+      el_1stTEta = 0;
+      el_2ndTEta = 0;
 
       lep_1stPt = 0;
       lep_2ndPt = 0;
@@ -983,6 +1012,23 @@ EL::StatusCode DiLepton :: execute (){
       FillHisto(hEvents[sr][sys], 0);
       FillHisto(hEvents[sr][sys], 1,   EventWeight);
       FillHisto(hEventWeight[sr][sys], EventWeight);
+
+      // Needed for theory uncertainties
+      //if (!isData) {
+      //  const xAOD::TruthEventContainer* truthevents = 0;
+      //  if ( !( (evtStore()->retrieve( truthevents, "TruthEvents" )).isSuccess()) ) {    
+      //        std::cout << "Can't retrieve TruthEvents " << std::endl;
+      //  }
+      //  if (truthevents->size()>0) {
+      //    const xAOD::TruthEvent *truthevent = (*truthevents)[0];
+      //    std::vector<float> variationweights = truthevent->weights();
+      //    if (variationweights.size()>0) {
+      //      for (int i=0;i<=variationweights.size();i++) {
+      //        mcWeightVariations.push_back(variationweights[i]);
+      //      }
+      //    }
+      //  }
+      //}
 
       //Fill Control Tree
       bool nom = (!sys && !sr); 
@@ -1045,8 +1091,15 @@ EL::StatusCode DiLepton :: execute (){
       if(getR1Jets==1) ANA_CHECK( SusyObjTool->GetFatJets(jetsR1_baseline, jetsR1_baselineAux) );
       setROOTmsg(1);
 
+      if(Debug){std::cout << APP_NAME << " DEBUG \t No. of Jets in container \t" << (int)(jets_baseline)->size() << std::endl;}
+      //(*jet_itr)->auxdata<float>("Jvt");
+      for( auto jet: *jets_baseline ) {
+        jet->auxdata<float>("jvt") = jet->auxdata<float>("Jvt");
+      }
+
+
       //Missing Et
-      this->getMET(EtMiss, EtMissPhi, met, jets_baseline, electrons_baseline, muons_baseline, photons_baseline, taus_baseline);
+      this->getMET(EtMiss, EtMissPhi, met, jets_baseline, electrons_baseline, muons_baseline, photons_baseline, taus_baseline, true, true);
       if(Debug){std::cout << APP_NAME << " DEBUG \t EtMiss " << EtMiss << "  EtMissPhi " << EtMissPhi << std::endl;}
 
       //Pass trigger
@@ -1062,8 +1115,30 @@ EL::StatusCode DiLepton :: execute (){
           if( !isTriggeredMet2016(triggerList2016, EtMiss, triggerInfo, dataPeriod) ) passTrigger = false; 
           break;
         case 2017:
-          if( !isTriggered(triggerList2017, triggerInfo) ) passTrigger = false;
-          if( !isTriggeredMet(triggerList2017, EtMiss, triggerInfo) ) passTrigger = false;
+          //if (eventrunNumber>=327103 && eventrunNumber<=328374){ //prescaled
+          //  if(Debug){std::cout << "Prescaled::RunNumber: " << eventrunNumber << std::endl;}
+          //  if(SusyObjTool->IsTrigPassed("HLT_2e24_lhvloose_nod0") ||
+          //      SusyObjTool->IsTrigPassed("HLT_e17_lhloose_nod0_mu14") ||
+          //      SusyObjTool->IsTrigPassed("HLT_mu22_mu8noL1") ||
+          //     (EtMiss>250000 && SusyObjTool->IsTrigPassed("HLT_xe110_pufit_L1XE55"))) passTrigger = true;
+          //}
+          //if (eventrunNumber<327103 || eventrunNumber>328374){ //unprescaled
+          //  if(Debug){std::cout << "Unprescaled::RunNumber: " << eventrunNumber << std::endl;}
+          //  if(SusyObjTool->IsTrigPassed("HLT_2e24_lhvloose_nod0") ||
+          //      SusyObjTool->IsTrigPassed("HLT_2e17_lhvloose_nod0_L12EM15VHI") ||
+          //      SusyObjTool->IsTrigPassed("HLT_e17_lhloose_nod0_mu14") ||
+          //      SusyObjTool->IsTrigPassed("HLT_mu22_mu8noL1") ||
+          //      (EtMiss>250000 && SusyObjTool->IsTrigPassed("HLT_xe110_pufit_L1XE55"))) passTrigger = true;
+          //}
+          //break;
+          if (eventrunNumber<326834 || eventrunNumber>328393){ //unprescaled
+            if( !isTriggered(triggerList2017_UNPS, triggerInfo) ) passTrigger = false;
+            if( !isTriggeredMet(triggerList2017_UNPS, triggerInfo) ) passTrigger = false;
+          }
+          if (eventrunNumber>=326834 && eventrunNumber<=328393){ //prescaled
+            if( !isTriggered(triggerList2017_PS, EtMiss, triggerInfo) ) passTrigger = false;
+            if( !isTriggeredMet(triggerList2017_PS, EtMiss, triggerInfo) ) passTrigger = false;
+          }
           break;
         default: break;
       }
@@ -1195,10 +1270,17 @@ EL::StatusCode DiLepton :: execute (){
       FillHisto(hCutflow, CutFlowIndex, nom);
       CutFlowIndex++;
 
-      // FIXME: causes large divergence in cutflow when switched on
-      //Lep_Jet_OR(electrons_baseline,muons_baseline,GoodJets);
-      //Lep_Jet_OR(electrons_baseline,muons_baseline,jets_baseline);
+      Lep_Jet_OR(electrons_baseline,muons_baseline,jets_baseline);
+      this->checkOR(muons_baseline);
+      this->checkOR(electrons_baseline);
+      this->checkOR(jets_baseline);
+
       Electron_Muon_OR(electrons_baseline,muons_baseline);
+      //Reset OR flag for non-BL objects 
+      this->checkOR(muons_baseline);
+      this->checkOR(electrons_baseline);
+      this->checkOR(jets_baseline);
+
 
       if(Debug){std::cout << APP_NAME << " DEBUG \t No. of Muons in container \t" << (int)(muons_baseline)->size() << std::endl;}
       xAOD::MuonContainer::iterator mu_itr = (muons_baseline)->begin();
@@ -1212,8 +1294,10 @@ EL::StatusCode DiLepton :: execute (){
       xAOD::ElectronContainer::iterator el_itr = (electrons_baseline)->begin();
       xAOD::ElectronContainer::iterator el_end = (electrons_baseline)->end();
       for( ; el_itr != el_end; ++el_itr ) {
-        this->isSignalElectron( **el_itr );
-        //this->isSignalElectron( **el_itr,20000,2 );
+        //this->isSignalElectron( **el_itr );
+        this->isSignalElectron( **el_itr,20000,2. );
+        if(Debug){std::cout << " Is Signal Electron: " << this->isSignalElectron( **el_itr,20000,2. ) << std::endl;}
+        if(Debug){std::cout << " Get Quality: " << getQuality( **el_itr ) << std::endl;}
         PrintInfo(*el_itr, APP_NAME, Debug);
       }
 
@@ -1226,7 +1310,9 @@ EL::StatusCode DiLepton :: execute (){
           muQualities.push_back( getQuality( **mu_itr ) );
 
         }
-        if( getQuality( **mu_itr )>1 ) GoodMuons->push_back(*mu_itr);
+        if( getQuality( **mu_itr )>1 ) {
+          GoodMuons->push_back(*mu_itr);
+        }
       }
 
       //Loop on good electrons
@@ -1236,7 +1322,9 @@ EL::StatusCode DiLepton :: execute (){
           elCharges.push_back( (*el_itr)->charge() );
           elQualities.push_back( getQuality( **el_itr ) );
         }
-        if( getQuality( **el_itr )>1 ) GoodElectrons->push_back(*el_itr);
+        if( getQuality( **el_itr )>1 ) {
+          GoodElectrons->push_back(*el_itr);
+        }
       }
 
 
@@ -1284,7 +1372,7 @@ EL::StatusCode DiLepton :: execute (){
         }
         */
 
-      //Merged lepton vector
+      //Merged lepton vector - baseline
       lepTLV = muTLV;
       lepCharges = muCharges;
       lepQualities = muQualities;
@@ -1365,12 +1453,13 @@ EL::StatusCode DiLepton :: execute (){
       for(unsigned int i(0); i<jetTLV_R1.size(); i++) FillHisto(BaselineJet_MjRecAll[sr][sys], (jetTLV_R1.at(i)).M());     
 
       //Cut on baseline leptons
-      NlepBL    = getLepNumber(muTLV, elTLV);
+      NlepBL    = getLepNumber(muTLV, elTLV, 2.47);
       NlepBLEta = getLepNumber(muTLV, elTLV, 2.0);
       if( NlepBL < 2 ) continue;
       FillHisto(hCutflow, CutFlowIndex, nom);
       CutFlowIndex++;
       if(Debug){std::cout << APP_NAME <<" DEBUG \t Cutflow::BaselineLep EventNumber "<<EventNumber<<Form("\t NlepBL = %i (%i for red.Eta)",NlepBL,NlepBLEta) << std::endl;}
+      cutflow_file_baseline << EventNumber << "\n";
 
 
       //Select signal leptons
@@ -1397,10 +1486,12 @@ EL::StatusCode DiLepton :: execute (){
       lep_2ndPt = (lepTLV.size()>1) ? (lepTLV.at(1).Pt()) : -1.;
       lep_3rdPt = (lepTLV.size()>2) ? (lepTLV.at(2).Pt()) : -1.;
 
+
       jet_1stPt = (jetTLV.size()>0) ? (jetTLV.at(0).Pt()) : -1.;
       jet_2ndPt = (jetTLV.size()>1) ? (jetTLV.at(1).Pt()) : -1.;
       jet_3rdPt = (jetTLV.size()>2) ? (jetTLV.at(2).Pt()) : -1.;
 
+      //topoStr = Form("%im %ie %il %ij",(int)muTLV_GL.size(), (int)elTLV_GL.size(), (int)lepTLV_GL.size(), (int)jetTLV.size() );
       topoStr = Form("%im %ie %il %ij",(int)muTLV.size(), (int)elTLV.size(), (int)lepTLV.size(), (int)jetTLV.size() );
       if(Debug){std::cout << APP_NAME << " DEBUG \t Topology before SR cuts "<< topoStr << std::endl;}
 
@@ -1419,53 +1510,61 @@ EL::StatusCode DiLepton :: execute (){
       if(Debug){std::cout << APP_NAME << " DEBUG \t Cutflow::SignalLep EventNumber "<< EventNumber << Form("\t NlepS=%i",(int)lepTLV.size()) << std::endl;}
       cutflow_file_all << EventNumber << "\n";
 
-      //Trigger matching
-      bool trigMatched = this->isTrigMatch(configYear, GoodMuons, GoodElectrons, EtMiss, triggerInfo, true);
-      if( !trigMatched ) continue;
-      FillHisto(hCutflow, CutFlowIndex, nom);
-      CutFlowIndex++;
-
-      //Z Veto
-      isZevent = (isResonance(muTLV, muCharges) || isResonance(elTLV, elCharges));
-      if( useZVeto && isZevent ) continue;
-      FillHisto(hCutflow, CutFlowIndex, nom);
-      CutFlowIndex++;
 
       //SS selection
-      bool muSS  = SSleptons(SignalRegion,  muTLV,  muCharges);
-      bool elSS  = SSleptons(SignalRegion,  elTLV,  elCharges);
-      bool lepSS = SSleptons(SignalRegion, lepTLV, lepCharges);
+      //bool muSS  = SSleptons(muTLV,  muCharges);
+      //bool elSS  = SSleptons(elTLV,  elCharges);
+      bool lepSS = SSleptons(lepTLV, lepCharges);
+      //bool muSS  = SSleptons(SignalRegion,  muTLV,  muCharges);
+      //bool elSS  = SSleptons(SignalRegion,  elTLV,  elCharges);
+      //bool lepSS = SSleptons(SignalRegion, lepTLV, lepCharges);
 
-      bool SameSign = !setLeptons ? lepSS : (setLeptons==1 ? muSS : elSS);
+      bool SameSign = (lepSS );
+      //bool SameSign = !setLeptons ? lepSS : (setLeptons==1 ? muSS : elSS);
       if(Debug){std::cout << APP_NAME << " DEBUG \t Lepton config = " << setLeptons << " \t found SS event = " << SameSign << std::endl;}
 
       if( !SameSign ) continue;
       FillHisto(hCutflow, CutFlowIndex, nom);
       CutFlowIndex++;
+      cutflow_file_SS << EventNumber << "\n";
 
-      //Get SS pair
-      std::vector <TLorentzVector> SSTLV;
-      SSTLV = !setLeptons ? SSpair(lepTLV,lepCharges) : (setLeptons==1 ? SSpair(muTLV,muCharges) : SSpair(elTLV,elCharges));
-      if(Debug){std::cout << APP_NAME <<" DEBUG \t SS1(Pt,eta,phi,E): ("<<SSTLV.at(0).Pt()<<", "<<SSTLV.at(0).Eta()<<", "<<SSTLV.at(0).Phi()<<", "<<SSTLV.at(0).E() << ") \n" 
-        << APP_NAME <<" DEBUG \t SS2(Pt,eta,phi,E): ("<<SSTLV.at(1).Pt()<<", "<<SSTLV.at(1).Eta()<<", "<<SSTLV.at(1).Phi()<<", "<<SSTLV.at(1).E() << ")" 
-          << std::endl;}
+      //Trigger matching
+      bool trigMatched = this->isTrigMatch(configYear, GoodMuons, GoodElectrons, EtMiss, triggerInfo, true, dataPeriod);
+      if( !trigMatched ) continue;
+      FillHisto(hCutflow, CutFlowIndex, nom);
+      CutFlowIndex++;
 
-      SSChannel = this->getChannel(SSTLV, muTLV, elTLV, setLeptons);
-      if(SSChannel==1){
-        FillHisto(hCutflow, CutFlowIndex, nom);
-        cutflow_file_mumu << EventNumber << "\n";
-      }
-      CutFlowIndex++;
-      if(SSChannel==2){
-        FillHisto(hCutflow, CutFlowIndex, nom);
-        cutflow_file_ee << EventNumber << "\n";
-      }
-      CutFlowIndex++;
-      if(SSChannel==3){
-        FillHisto(hCutflow, CutFlowIndex, nom);
-        cutflow_file_emu << EventNumber << "\n";
-      }
-      CutFlowIndex++;
+
+      ////Z Veto
+      //isZevent = (isResonance(muTLV, muCharges) || isResonance(elTLV, elCharges));
+      //if( useZVeto && isZevent ) continue;
+      //FillHisto(hCutflow, CutFlowIndex, nom);
+      //CutFlowIndex++;
+
+
+      ////Get SS pair
+      //std::vector <TLorentzVector> SSTLV;
+      //SSTLV = !setLeptons ? SSpair(lepTLV,lepCharges) : (setLeptons==1 ? SSpair(muTLV,muCharges) : SSpair(elTLV,elCharges));
+      //if(Debug){std::cout << APP_NAME <<" DEBUG \t SS1(Pt,eta,phi,E): ("<<SSTLV.at(0).Pt()<<", "<<SSTLV.at(0).Eta()<<", "<<SSTLV.at(0).Phi()<<", "<<SSTLV.at(0).E() << ") \n" 
+      //  << APP_NAME <<" DEBUG \t SS2(Pt,eta,phi,E): ("<<SSTLV.at(1).Pt()<<", "<<SSTLV.at(1).Eta()<<", "<<SSTLV.at(1).Phi()<<", "<<SSTLV.at(1).E() << ")" 
+      //    << std::endl;}
+
+      //SSChannel = this->getChannel(SSTLV, muTLV, elTLV, setLeptons);
+      //if(SSChannel==1){
+      //  FillHisto(hCutflow, CutFlowIndex, nom);
+      //  cutflow_file_mumu << EventNumber << "\n";
+      //}
+      //CutFlowIndex++;
+      //if(SSChannel==2){
+      //  FillHisto(hCutflow, CutFlowIndex, nom);
+      //  cutflow_file_ee << EventNumber << "\n";
+      //}
+      //CutFlowIndex++;
+      //if(SSChannel==3){
+      //  FillHisto(hCutflow, CutFlowIndex, nom);
+      //  cutflow_file_emu << EventNumber << "\n";
+      //}
+      //CutFlowIndex++;
 
       //Apply trigger SF
       /*      bool globTrigSF = true;
@@ -1586,10 +1685,45 @@ EL::StatusCode DiLepton :: execute (){
       bool passBmin =  Nbjet >= SignalRegion.NBjet;
       bool passBmax = (SignalRegion.NBmax < 0 || Nbjet < SignalRegion.NBmax);
 
+      // ==========Cutflow - separating SS Channels========
+      std::vector <TLorentzVector> SSTLV;
+      SSTLV = !setLeptons ? SSpair(lepTLV,lepCharges) : (setLeptons==1 ? SSpair(muTLV,muCharges) : SSpair(elTLV,elCharges));
+      if(Debug){std::cout << APP_NAME <<" DEBUG \t SS1(Pt,eta,phi,E): ("<<SSTLV.at(0).Pt()<<", "<<SSTLV.at(0).Eta()<<", "<<SSTLV.at(0).Phi()<<", "<<SSTLV.at(0).E() << ") \n" 
+        << APP_NAME <<" DEBUG \t SS2(Pt,eta,phi,E): ("<<SSTLV.at(1).Pt()<<", "<<SSTLV.at(1).Eta()<<", "<<SSTLV.at(1).Phi()<<", "<<SSTLV.at(1).E() << ")" 
+          << std::endl;}
+
+      SSChannel = this->getChannel(SSTLV, muTLV, elTLV, setLeptons);
+      if(SSChannel==1){
+        FillHisto(hCutflow, CutFlowIndex, nom);
+        cutflow_file_mumu << EventNumber << "\n";
+      }
+      CutFlowIndex++;
+      if(SSChannel==1 && Nbjet>0) {FillHisto(hCutflow, CutFlowIndex, nom);} CutFlowIndex++;
+      if(SSChannel==1 && Nbjet>0 && Njet50>3) {FillHisto(hCutflow, CutFlowIndex, nom);} CutFlowIndex++;
+      if(SSChannel==1 && Nbjet>0 && Njet50>3 && EtMiss>125000) {FillHisto(hCutflow, CutFlowIndex, nom);} CutFlowIndex++;
+
+      if(SSChannel==2){
+        FillHisto(hCutflow, CutFlowIndex, nom);
+        cutflow_file_ee << EventNumber << "\n";
+      }
+      CutFlowIndex++;
+      if(SSChannel==2 && Nbjet>0) {FillHisto(hCutflow, CutFlowIndex, nom);} CutFlowIndex++;
+      if(SSChannel==2 && Nbjet>0 && Njet50>3) {FillHisto(hCutflow, CutFlowIndex, nom);} CutFlowIndex++;
+      if(SSChannel==2 && Nbjet>0 && Njet50>3 && EtMiss>125000) {FillHisto(hCutflow, CutFlowIndex, nom);} CutFlowIndex++;
+
+      if(SSChannel==3){
+        FillHisto(hCutflow, CutFlowIndex, nom);
+        cutflow_file_emu << EventNumber << "\n";
+      }
+      CutFlowIndex++;
+      if(SSChannel==3 && Nbjet>0) {FillHisto(hCutflow, CutFlowIndex, nom);} CutFlowIndex++;
+      if(SSChannel==3 && Nbjet>0 && Njet50>3) {FillHisto(hCutflow, CutFlowIndex, nom);} CutFlowIndex++;
+      if(SSChannel==3 && Nbjet>0 && Njet50>3 && EtMiss>125000) {FillHisto(hCutflow, CutFlowIndex, nom);} CutFlowIndex++;
+      //==============================
+
       if( !passJmin || !passBmin || !passBmax ) continue;
       FillHisto(hCutflow, CutFlowIndex, nom);
       CutFlowIndex++;
-
 
       // MET,Meff Cut
       float MeffCut   = SignalRegion.MeffCut;
@@ -1681,7 +1815,9 @@ EL::StatusCode DiLepton :: finalize (){
     PrintCutflow( hCutflow );
   }
   cutflow_file_trig.close();
+  cutflow_file_baseline.close();
   cutflow_file_all.close();
+  cutflow_file_SS.close();
   cutflow_file_mumu.close();
   cutflow_file_ee.close();
   cutflow_file_emu.close();
@@ -1723,12 +1859,21 @@ void DiLepton :: PrintCutflow(TH1 *hCut){
   std::cout << " Cosmics veto   \t"<< (int)hCut->GetBinContent(11) << std::endl;
   std::cout << " 2 baseline lep.\t"<< (int)hCut->GetBinContent(12) << std::endl;
   std::cout << " 2 signal lep.  \t"<< (int)hCut->GetBinContent(13) << std::endl;
-  std::cout << " Trigger match  \t"<< (int)hCut->GetBinContent(14) << std::endl;
-  std::cout << " Z veto[off]    \t"<< (int)hCut->GetBinContent(15) << std::endl;
-  std::cout << " SS leptons     \t"<< (int)hCut->GetBinContent(16) << std::endl;
-  std::cout << " mumu channel   \t"<< (int)hCut->GetBinContent(17) << std::endl;
-  std::cout << " ee channel     \t"<< (int)hCut->GetBinContent(18) << std::endl;
-  std::cout << " emu channel    \t"<< (int)hCut->GetBinContent(19) << std::endl;
+  std::cout << " SS leptons     \t"<< (int)hCut->GetBinContent(14) << std::endl;
+  std::cout << " Trigger match  \t"<< (int)hCut->GetBinContent(15) << std::endl;
+  //std::cout << " Z veto[off]    \t"<< (int)hCut->GetBinContent(16) << std::endl;
+  std::cout << " mumu channel   \t"<< (int)hCut->GetBinContent(16) << std::endl;
+  std::cout << " mumu NBjets>0  \t"<< (int)hCut->GetBinContent(17) << std::endl;
+  std::cout << " mumu NJets>3   \t"<< (int)hCut->GetBinContent(18) << std::endl;
+  std::cout << " mumu MET>125   \t"<< (int)hCut->GetBinContent(19) << std::endl;
+  std::cout << " ee channel     \t"<< (int)hCut->GetBinContent(20) << std::endl;
+  std::cout << " ee NBjets>0    \t"<< (int)hCut->GetBinContent(21) << std::endl;
+  std::cout << " ee NJets>3     \t"<< (int)hCut->GetBinContent(22) << std::endl;
+  std::cout << " ee MET>125     \t"<< (int)hCut->GetBinContent(23) << std::endl;
+  std::cout << " emu channel    \t"<< (int)hCut->GetBinContent(24) << std::endl;
+  std::cout << " emu NBjets>0   \t"<< (int)hCut->GetBinContent(25) << std::endl;
+  std::cout << " emu NJets>3    \t"<< (int)hCut->GetBinContent(26) << std::endl;
+  std::cout << " emu MET>125    \t"<< (int)hCut->GetBinContent(27) << std::endl;
   //std::cout << " SR::NJet(bjet) \t"<< (int)hCut->GetBinContent(17) << std::endl;
   //std::cout << " SR::EtMiss Cut \t"<< (int)hCut->GetBinContent(18) << std::endl;
   //std::cout << " SR::Meff Cut   \t"<< (int)hCut->GetBinContent(19) << std::endl;
@@ -1892,7 +2037,7 @@ bool DiLepton :: isResonance(std::vector<TLorentzVector> vectors, std::vector< f
   bool res(false);
   bool OS[6] = {0., 0., 0., 0., 0., 0.};
   float M[6] = {0., 0., 0., 0., 0., 0.};
-  float MZlow(80000.), MZup(100000.);
+  float MZlow(81200.), MZup(101200.);
 
   if(vectors.size() < 2) return res;
   if(vectors.size() == 2){
@@ -1963,12 +2108,13 @@ bool DiLepton :: setTriggers(std::vector<std::string> &trigList, std::string tri
   PileUpWeight = isMC ? this->getPileupWeight() : 1.;
   PileUpHash   = isMC ? this->getPileupHash()   : 1.;
 
-  int configYear = SusyObjTool->treatAsYear();  
   int eventrunNumber = SusyObjTool->GetRunNumber();  
 
-  if (configYear==2017){
-    if (eventrunNumber>=326834 && eventrunNumber<=328393) trigname="DILEPTON_MET_PRESCALE"; 
-  }
+  //if (option==2017){
+  //  if (eventrunNumber>=327103 && eventrunNumber<=328374) trigname="DILEPTON_MET_PRESCALED"; 
+  //  //if (eventrunNumber>=326834 && eventrunNumber<=328393) trigname="DILEPTON_MET_PRESCALED"; 
+  //  else trigname="DILEPTON_MET";
+  //}
 
 
   if(Debug){std::cout << "Trigname: " << trigname << std::endl;}
@@ -2028,7 +2174,7 @@ bool DiLepton :: setTriggers(std::vector<std::string> &trigList, std::string tri
   }
 
   // Use when L1_2EM15VHI is prescaled
-  if(trigname=="DILEPTON_MET_PRESCALE"){
+  if(trigname=="DILEPTON_MET_PRESCALED"){
     switch(option){
       case 2017:
         trigList.push_back("HLT_2e24_lhvloose_nod0"); 
@@ -2145,7 +2291,7 @@ int DiLepton :: nMetTrigger_xe110(std::vector<std::string> trigInfo){
   return (int)nTrig;
 }
 
-bool DiLepton :: isTrigMatch(int yearOpt, xAOD::MuonContainer *muons, xAOD::ElectronContainer* electrons, float met, std::vector<std::string> trigInfo, bool doMatch, float metcut){
+bool DiLepton :: isTrigMatch(int yearOpt, xAOD::MuonContainer *muons, xAOD::ElectronContainer* electrons, float met, std::vector<std::string> trigInfo, bool doMatch, int period, float metcut){
 
   const char *APP_NAME = "DiLepton::TriggerMatch()";
   bool pass(true);
@@ -2163,6 +2309,10 @@ bool DiLepton :: isTrigMatch(int yearOpt, xAOD::MuonContainer *muons, xAOD::Elec
       ptCutMuMu = 20000.;
       ptCutElEl = 20000.;
       ptCutElMu = 20000.;
+      if( met>metcut && this->nMetTrigger(trigInfo) ){
+        if(Debug){std::cout << APP_NAME << Form(" DEBUG \t EtMiss > %.0f and event is triggered by %i EtMiss trigger, return %i", metcut, this->nMetTrigger(trigInfo), pass) << std::endl;}
+        return pass;
+      }
       break;
     case 2016:
       trigList = triggerList2016;
@@ -2172,6 +2322,18 @@ bool DiLepton :: isTrigMatch(int yearOpt, xAOD::MuonContainer *muons, xAOD::Elec
       ptCutMuMu  = 23000.;
       ptCutElEl  = 20000.;
       ptCutElMu  = 20000.;
+      if( period==1 && met>metcut && this->nMetTrigger_xe90(trigInfo) ){
+        if(Debug){std::cout << APP_NAME << Form(" DEBUG \t EtMiss > %.0f and event is triggered by %i EtMiss trigger, return %i", metcut, this->nMetTrigger_xe90(trigInfo), pass) << std::endl;}
+        return pass;
+      }
+      if( period==2 && met>metcut && this->nMetTrigger_xe100(trigInfo) ){
+        if(Debug){std::cout << APP_NAME << Form(" DEBUG \t EtMiss > %.0f and event is triggered by %i EtMiss trigger, return %i", metcut, this->nMetTrigger_xe100(trigInfo), pass) << std::endl;}
+        return pass;
+      }
+      if( period==3 && met>metcut && this->nMetTrigger_xe110(trigInfo) ){
+        if(Debug){std::cout << APP_NAME << Form(" DEBUG \t EtMiss > %.0f and event is triggered by %i EtMiss trigger, return %i", metcut, this->nMetTrigger_xe110(trigInfo), pass) << std::endl;}
+        return pass;
+      }
       break;
     case 2017:
       trigList = triggerList2017;
@@ -2181,13 +2343,13 @@ bool DiLepton :: isTrigMatch(int yearOpt, xAOD::MuonContainer *muons, xAOD::Elec
       ptCutMuMu  = 23000.;
       ptCutElEl  = 20000.;
       ptCutElMu  = 20000.;
+      if( met>metcut && this->nMetTrigger(trigInfo) ){
+        if(Debug){std::cout << APP_NAME << Form(" DEBUG \t EtMiss > %.0f and event is triggered by %i EtMiss trigger, return %i", metcut, this->nMetTrigger(trigInfo), pass) << std::endl;}
+        return pass;
+      }
       break;
     default: 
       break;
-  }
-  if( met>metcut && this->nMetTrigger(trigInfo) ){
-    if(Debug){std::cout << APP_NAME << Form(" DEBUG \t EtMiss > %.0f and event is triggered by %i EtMiss trigger, return %i", metcut, this->nMetTrigger(trigInfo), pass) << std::endl;}
-    return pass;
   }
 
   int matchMuMu(0), matchElEl(0), matchElMu(0);
@@ -2311,117 +2473,112 @@ int DiLepton :: getPairingOption(SR sr){
   return (int)options[sr.Pairing];
 }
 
-bool DiLepton::SSleptons(SR sr, std::vector< TLorentzVector > lepTLV, std::vector<float> lepCharges){
+bool DiLepton::SSleptons(std::vector< TLorentzVector > lepTLV, std::vector<float> lepCharges){
+//bool DiLepton::SSleptons(SR sr, std::vector< TLorentzVector > lepTLV, std::vector<float> lepCharges){
 
   //Case 0: Keep if L1L2 are SS OR if L3 present
   //Case 1: No requirement on 3rd lepton, L1L2 SS
   //Case 2: At least 3 leptons 
   //Case 3: Exactly 2 leptons  
 
-  int option = this->getPairingOption(sr);
-  bool passLepton(false), passPt(false), passCharges(false);
+  //int option = this->getPairingOption(sr);
+  //bool passLepton(false), passPt(false), passCharges(false);
+  bool passPt(false), passCharges(false);
   unsigned int LepSize = lepTLV.size();
 
-  if(Debug){std::cout << "DiLepton::SSleptons()" << " DEBUG \t Using pairing option = " << option << std::endl;}
+  //if(Debug){std::cout << "DiLepton::SSleptons()" << " DEBUG \t Using pairing option = " << option << std::endl;}
+  if(Debug){std::cout << "DiLepton::SSleptons() - in loop"<< std::endl;}
+  if(Debug){std::cout << "LepSize: " << LepSize << std::endl;}
 
-  if( LepSize<2 ) return false;
-  if( option==2 && LepSize<3 ) return false;
-  switch(option){
-    case 0:
-      passLepton = LepSize>=2;
-      passPt = lepTLV.at(0).Pt()>lep_PtCut[0] && lepTLV.at(1).Pt()>lep_PtCut[1];  
-      if(LepSize>=3) passPt = passPt && lepTLV.at(2).Pt()>lep_PtCut[2];
-      passCharges = (lepCharges[0]*lepCharges[1]>0 || LepSize>=3);   
-      break;
-    case 1:
-      passLepton = LepSize>=2;
-      passPt = lepTLV.at(0).Pt()>lep_PtCut[0] && lepTLV.at(1).Pt()>lep_PtCut[1];  
-      passCharges = lepCharges[0]*lepCharges[1]>0; 
-      break;
-    case 2:
-      passLepton = LepSize>=3;    
-      passPt = lepTLV.at(0).Pt()>lep_PtCut[0] && lepTLV.at(1).Pt()>lep_PtCut[1] && lepTLV.at(2).Pt()>lep_PtCut[2];	     
-      passCharges = (lepCharges[0]*lepCharges[1]>0 || LepSize>=3);
-      break;
-    case 3:
-      passLepton = LepSize==2;    
-      passPt = lepTLV.at(0).Pt()>lep_PtCut[0] && lepTLV.at(1).Pt()>lep_PtCut[1];	    
-      passCharges = lepCharges[0]*lepCharges[1]>0; 
-      break;
-    default:
-      Error("DiLepton::SSleptons() \t Pairing option unknown returning",0);
+  if( LepSize<2 ) {
+    if(Debug){std::cout << "DiLepton::SSlepton() - didn't find 2leptons" << std::endl;}
+    return false;
   }
-  bool selected = (passLepton && passPt && passCharges);  
+  if(LepSize==2){
+    passPt = lepTLV.at(0).Pt()>lep_PtCut[0] && lepTLV.at(1).Pt()>lep_PtCut[1];
+    passCharges = lepCharges[0]*lepCharges[1]>0;
+    if(Debug){std::cout << "LepCharge[0]: " << lepCharges[0] << ", LepCharge[1]: " << lepCharges[1] << std::endl;}
+  }
+  if(LepSize>2){
+    passPt = lepTLV.at(0).Pt()>lep_PtCut[0] && lepTLV.at(1).Pt()>lep_PtCut[1] && lepTLV.at(2).Pt()>lep_PtCut[2];
+    passCharges = true;
+  }
+  //switch(option){
+  //  case 0:
+  //    passLepton = LepSize>=2;
+  //    passPt = lepTLV.at(0).Pt()>lep_PtCut[0] && lepTLV.at(1).Pt()>lep_PtCut[1];  
+  //    if(LepSize>=3) passPt = passPt && lepTLV.at(2).Pt()>lep_PtCut[2];
+  //    passCharges = (lepCharges[0]*lepCharges[1]>0 || LepSize>=3);   
+  //    break;
+  //  case 1:
+  //    passLepton = LepSize>=2;
+  //    passPt = lepTLV.at(0).Pt()>lep_PtCut[0] && lepTLV.at(1).Pt()>lep_PtCut[1];  
+  //    passCharges = lepCharges[0]*lepCharges[1]>0; 
+  //    break;
+  //  case 2:
+  //    passLepton = LepSize>=3;    
+  //    passPt = lepTLV.at(0).Pt()>lep_PtCut[0] && lepTLV.at(1).Pt()>lep_PtCut[1] && lepTLV.at(2).Pt()>lep_PtCut[2];	     
+  //    passCharges = (lepCharges[0]*lepCharges[1]>0 || LepSize>=3);
+  //    break;
+  //  case 3:
+  //    passLepton = LepSize==2;    
+  //    passPt = lepTLV.at(0).Pt()>lep_PtCut[0] && lepTLV.at(1).Pt()>lep_PtCut[1];	    
+  //    passCharges = lepCharges[0]*lepCharges[1]>0; 
+  //    break;
+  //  default:
+  //    Error("DiLepton::SSleptons() \t Pairing option unknown returning",0);
+  //}
+  //bool selected = (passLepton && passPt && passCharges);  
+  bool selected = (passPt && passCharges);  
 
   return selected;
 }
 
-//void DiLepton :: Lep_Jet_OR(xAOD::IParticleContainer *electrons_baseline,xAOD::IParticleContainer *muons_baseline,xAOD::JetContainer *jets_baseline){
-//
-//  TLorentzVector electron_1;
-//  TLorentzVector muon_1;
-//  TLorentzVector jet_1;
-//  float dR=9999.;
-//
-//  for (auto jet : *jets_baseline){
-//    if((*jet).auxdata<char>("passOR") == 0) continue;
-//    jet_1 = (*jet).p4();
-//    for (auto mu : *muons_baseline){
-//      if((*mu).auxdata<char>("passOR") == 0) continue;
-//      muon_1 = (*mu).p4();
-//      dR = (jet_1).DeltaR(muon_1);
-//      if(!badJvt(*jet) && dR<=std::min(0.4, 0.1 + 9600./jet_1.Pt())){
-//        (*mu).auxdata<char>("passOR") = 0;
-//      }
-//    }
-//    for (auto el : *electrons_baseline){
-//      if((*el).auxdata<char>("passOR") == 0) continue;
-//      electron_1 = (*el).p4();
-//      dR = (jet_1).DeltaR(electron_1);
-//      if(!badJvt(*jet) && dR<=std::min(0.4, 0.1 + 9600./jet_1.Pt())){
-//        (*el).auxdata<char>("passOR") = 0;
-//      }
-//    }
-//  }
-//
-//}
-
-void DiLepton :: Lep_Jet_OR(xAOD::IParticleContainer *electrons_baseline,xAOD::IParticleContainer *muons_baseline,xAOD::JetContainer *GoodJets){
+void DiLepton :: Lep_Jet_OR(xAOD::IParticleContainer *electrons_baseline,xAOD::IParticleContainer *muons_baseline,xAOD::JetContainer *jets_baseline){
 
   TLorentzVector electron_1;
   TLorentzVector muon_1;
   TLorentzVector jet_1;
   float dR=9999.;
 
-  for (auto jet : *GoodJets){
+  for (auto jet : *jets_baseline){
     if((*jet).auxdata<char>("passOR") == 0) continue;
+    if(badJvt(*jet)) continue;
     jet_1 = (*jet).p4();
     for (auto mu : *muons_baseline){
       if((*mu).auxdata<char>("passOR") == 0) continue;
       muon_1 = (*mu).p4();
-      dR = (jet_1).DeltaR(muon_1);
-      if(dR<=std::min(0.4, 0.1 + 9600./jet_1.Pt())){
+      double DY = fabs(jet_1.Rapidity() - muon_1.Rapidity());
+      double Dphi =fabs(jet_1.Phi() - muon_1.Phi());
+      if ( Dphi > M_PI ) Dphi = 2*M_PI - Dphi;
+      dR = sqrt(DY*DY + Dphi*Dphi);
+      if(dR<std::min(0.4, 0.1 + 9600./muon_1.Pt())){
         (*mu).auxdata<char>("passOR") = 0;
+        std::cout << "JL: Muon is being removed" << std::endl;
       }
     }
-    for (auto el : *GoodJets){
+    for (auto el : *electrons_baseline){
       if((*el).auxdata<char>("passOR") == 0) continue;
       electron_1 = (*el).p4();
-      dR = (jet_1).DeltaR(electron_1);
-      if(dR<=std::min(0.4, 0.1 + 9600./jet_1.Pt())){
+      double DY = fabs(jet_1.Rapidity() - electron_1.Rapidity());
+      double Dphi =fabs(jet_1.Phi() - electron_1.Phi());
+      if ( Dphi > M_PI ) Dphi = 2*M_PI - Dphi;
+      dR = sqrt(DY*DY + Dphi*Dphi);
+      if(dR<std::min(0.4, 0.1 + 9600./electron_1.Pt())){
         (*el).auxdata<char>("passOR") = 0;
+        std::cout << "JL: Electron is removed" << std::endl;
       }
     }
   }
 
 }
 
+
 void DiLepton :: Electron_Muon_OR(xAOD::IParticleContainer *electrons_baseline,xAOD::IParticleContainer *muons_baseline){
 
   TLorentzVector electron_1;
   TLorentzVector muon_1;
   TLorentzVector electron_2;
-  TLorentzVector muon_2;
   float dR=9999.;
 
   for (auto el : *electrons_baseline){
@@ -2430,8 +2587,11 @@ void DiLepton :: Electron_Muon_OR(xAOD::IParticleContainer *electrons_baseline,x
     for (auto mu : *muons_baseline){
       if((*mu).auxdata<char>("passOR") == 0) continue;
       muon_1 = (*mu).p4();
-      dR = (electron_1).DeltaR(muon_1);
-      if(dR<=0.01){
+      double DY = fabs(electron_1.Rapidity() - muon_1.Rapidity());
+      double Dphi =fabs(electron_1.Phi() - muon_1.Phi());
+      if ( Dphi > M_PI ) Dphi = 2*M_PI - Dphi;
+      dR = sqrt(DY*DY + Dphi*Dphi);
+      if(dR<0.01){
         (*el).auxdata<char>("passOR") = 0;
       }
     }
@@ -2439,8 +2599,11 @@ void DiLepton :: Electron_Muon_OR(xAOD::IParticleContainer *electrons_baseline,x
       if((*el2).auxdata<char>("passOR") == 0) continue;
       electron_2 = (*el2).p4();
       if(el == el2) continue;
-      dR = (electron_1).DeltaR(electron_2);
-      if(dR<=0.05){
+      double DY = fabs(electron_1.Rapidity() - electron_2.Rapidity());
+      double Dphi =fabs(electron_1.Phi() - electron_2.Phi());
+      if ( Dphi > M_PI ) Dphi = 2*M_PI - Dphi;
+      dR = sqrt(DY*DY + Dphi*Dphi);
+      if(dR<0.05){
         if(electron_1.Pt() < electron_2.Pt()) {
           (*el).auxdata<char>("passOR") = 0;
         }
@@ -2452,20 +2615,6 @@ void DiLepton :: Electron_Muon_OR(xAOD::IParticleContainer *electrons_baseline,x
   }
 
 
-  /*
-  for (auto mu : *muons_baseline){
-    muon_1 = (*mu).p4();
-    for (auto mu2 : *muons_baseline){
-      muon_2 = (*mu2).p4();
-      if(mu == mu2)
-        continue;
-      dR = (muon_2).DeltaR(muon_1);
-      if(dR<=0.01){
-        (*mu).auxdata<char>("passOR") = 0;
-        (*mu2).auxdata<char>("passOR") = 0;
-      }
-    }
-  }*/
 }
 
 bool DiLepton :: inCrackRegion(xAOD::Electron *el){
@@ -2489,10 +2638,16 @@ bool DiLepton :: isSignalElectron(xAOD::Electron &el, float ptcut, float etamax)
 
   static SG::AuxElement::Decorator<char> dec_Sig("SIG");
   bool pass(false);
+  //if(Debug){std::cout << "sSignalElectron():: passOR: " << (int)el.auxdata<char>("passOR") << std::endl;}
+  //if(Debug){std::cout << "sSignalElectron():: signal: " << (int)el.auxdata<char>("signal") << std::endl;}
+  //if(Debug){std::cout << "sSignalElectron():: Pt: " << el.pt() << " - Ptcut: " << ptcut << std::endl;}
+  //if(Debug){std::cout << "sSignalElectron():: Eta: " << TMath::Abs(el.trackParticle()->eta()) << " - Etacut: " << etamax << std::endl;}
 
   if(el.auxdata<char>("passOR")==1 && el.auxdata<char>("signal")==1 && 
-      el.pt() > ptcut && TMath::Abs(el.eta()) < etamax ) pass = true;
+      TMath::Abs(el.trackParticle()->eta()) < etamax ) pass = true;
+      //el.pt() > ptcut && TMath::Abs(el.trackParticle()->eta()) < etamax ) pass = true;
   dec_Sig(el) = pass;
+
   return pass;
 }
 
@@ -2541,6 +2696,7 @@ void DiLepton :: checkOR(xAOD::IParticleContainer *particles){
     if(p->auxdata<char>("baseline")==0 || p->auxdata<char>("passOR")==0) p->auxdata<char>("passOR") = 0; 
 }
 
+
 bool DiLepton :: isBaseline(xAOD::ElectronContainer* electrons, bool setCuts, double d0Cut){
 
   const char *APP_NAME = "DiLepton::isBaseline()";
@@ -2576,7 +2732,9 @@ int DiLepton :: getQuality(const xAOD::Muon &mu){
 int DiLepton :: getQuality(const xAOD::Electron &el){
   int type(0);
   if( el.auxdata<char>("passOR")==1 ) type++;
+  if(Debug){std::cout << "passOR: " << type << std::endl;}
   if( type>0 && el.auxdata<char>("SIG")==1 ) type++;
+  if(Debug){std::cout << "getQuality: " << type << std::endl;}
   return type;
 }
 
@@ -2673,9 +2831,72 @@ void DiLepton :: getSignalLeptons(const char *type, std::vector< TLorentzVector 
 
 bool DiLepton :: hasLeptons(std::vector<TLorentzVector> leptons){
   if(leptons.size()<2) return false;
-  if(leptons.at(0).Pt()<lep_PtCut[0] || leptons.at(1).Pt()<lep_PtCut[1]) return false;
+  if(leptons.at(0).Pt()<lep_PtCut[0] || leptons.at(1).Pt()<lep_PtCut[1] ) return false;
   return true;
 }
+
+//std::vector<TLorentzVector> DiLepton :: SSpair(std::vector< TLorentzVector > leptons, std::vector<float> charges){
+//
+//  std::vector<TLorentzVector> SSpair;
+//  unsigned int N = leptons.size(); 
+//  if( N==2 ){ 
+//    if(charges[0]*charges[1]>0){
+//      SSpair.push_back(lepTLV.at(0));
+//      SSpair.push_back(lepTLV.at(1));
+//      return SSpair;
+//    }
+//  }
+//  if( N==3 ){
+//    if(charges[0]*charges[1]>0){
+//      SSpair.push_back(lepTLV.at(0));
+//      SSpair.push_back(lepTLV.at(1));
+//      return SSpair;
+//    }
+//    if(charges[0]*charges[2]>0){
+//      SSpair.push_back(lepTLV.at(0));
+//      SSpair.push_back(lepTLV.at(2));
+//      return SSpair;
+//    }
+//    if(charges[1]*charges[2]>0){
+//      SSpair.push_back(lepTLV.at(1));
+//      SSpair.push_back(lepTLV.at(2));
+//      return SSpair;
+//    }
+//  }    
+//  if( N>3 ){
+//    if(charges[0]*charges[1]>0){
+//      SSpair.push_back(lepTLV.at(0));
+//      SSpair.push_back(lepTLV.at(1));
+//      return SSpair;
+//    }
+//    if(charges[0]*charges[2]>0){
+//      SSpair.push_back(lepTLV.at(0));
+//      SSpair.push_back(lepTLV.at(2));
+//      return SSpair;
+//    }
+//    if(charges[0]*charges[3]>0){
+//      SSpair.push_back(lepTLV.at(0));
+//      SSpair.push_back(lepTLV.at(3));
+//      return SSpair;
+//    }
+//    if(charges[1]*charges[2]>0){
+//      SSpair.push_back(lepTLV.at(1));
+//      SSpair.push_back(lepTLV.at(2));
+//      return SSpair;
+//    }
+//    if(charges[1]*charges[3]>0){
+//      SSpair.push_back(lepTLV.at(1));
+//      SSpair.push_back(lepTLV.at(3));
+//      return SSpair;
+//    }
+//    if(charges[2]*charges[3]>0){
+//      SSpair.push_back(lepTLV.at(2));
+//      SSpair.push_back(lepTLV.at(3));
+//      return SSpair;
+//    }
+//  }
+//  return SSpair;
+//}
 
 std::vector<TLorentzVector> DiLepton :: SSpair(std::vector< TLorentzVector > leptons, std::vector<float> charges){
 
@@ -2781,6 +3002,7 @@ void DiLepton :: FillHisto(TH2* h, float x, float y, float w, bool fill){
   if(h) h->Fill(x, y, w); 
   return; 
 }
+
 
 int DiLepton :: getChannel(std::vector<TLorentzVector> ss, std::vector<TLorentzVector> muons, std::vector<TLorentzVector> electrons, int lepConfig){
 

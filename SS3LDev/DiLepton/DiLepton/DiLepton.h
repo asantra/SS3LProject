@@ -93,7 +93,9 @@ class DiLepton : public EL::Algorithm
 
  private:
   std::ofstream cutflow_file_trig; //!
+  std::ofstream cutflow_file_baseline; //!
   std::ofstream cutflow_file_all; //!
+  std::ofstream cutflow_file_SS; //!
   std::ofstream cutflow_file_emu; //!
   std::ofstream cutflow_file_ee; //!
   std::ofstream cutflow_file_mumu; //!
@@ -127,6 +129,7 @@ class DiLepton : public EL::Algorithm
   float xAODWeightSum; //!
 
   float  EventWeight;   //!
+  float  mcweightvariations;   //!
   float  PileUpWeight;  //!
   float  EventWeightPileUp; //!
   float  ObjectSF;     //!
@@ -135,6 +138,7 @@ class DiLepton : public EL::Algorithm
   float  trigSFerr;    //!
   float  weight;       //!
 
+  std::vector<float> mcWeightVariations;  //!
   std::vector<float> SysWeights;  //!
   std::vector<float> PDFWeights;  //!
   std::vector<float> CFTWeights;  //!
@@ -181,6 +185,8 @@ class DiLepton : public EL::Algorithm
   float  el_3rdPt; //!
   float  el_1stEta; //!
   float  el_2ndEta; //!
+  float  el_1stTEta; //!
+  float  el_2ndTEta; //!
 
   float  lep_1stPt; //!
   float  lep_2ndPt; //!
@@ -237,7 +243,8 @@ class DiLepton : public EL::Algorithm
   bool isMC; //!
   void PrintCutflow(TH1* hCut); //!
 
-  bool SSleptons(DiLepton::SR sr, std::vector<TLorentzVector> lepTLV, std::vector<float> lepCharges); //!
+  bool SSleptons(std::vector<TLorentzVector> lepTLV, std::vector<float> lepCharges); //!
+  //bool SSleptons(DiLepton::SR sr, std::vector<TLorentzVector> lepTLV, std::vector<float> lepCharges); //!
   bool hasLeptons(std::vector<TLorentzVector> leptons); //!
   bool inCrackRegion(xAOD::Electron *el); //! 
 
@@ -275,6 +282,12 @@ class DiLepton : public EL::Algorithm
   enum JetWeight {MV2, JVT}; //!
   bool isResonance(std::vector<TLorentzVector> vectors, std::vector<float> charges); //!
 
+  std::vector<float> muCharges_GL; //!
+  std::vector<float> elCharges_GL; //!
+  std::vector<float> lepCharges_GL; //!  
+  std::vector<float> muQualities_GL; //!
+  std::vector<float> elQualities_GL; //!
+  std::vector<float> lepQualities_GL; //!   
   std::vector<float> muCharges; //!
   std::vector<float> elCharges; //!
   std::vector<float> lepCharges; //!  
@@ -283,6 +296,9 @@ class DiLepton : public EL::Algorithm
   std::vector<float> elQualities; //!
   std::vector<float> lepQualities; //!   
   std::vector<float> jetQualities; //!
+  std::vector<TLorentzVector> muTLV_GL;  //!
+  std::vector<TLorentzVector> elTLV_GL;  //!
+  std::vector<TLorentzVector> lepTLV_GL;    //!
   std::vector<TLorentzVector> muTLV;  //!
   std::vector<TLorentzVector> elTLV;  //!
   std::vector<TLorentzVector> lepTLV;    //!
@@ -353,7 +369,7 @@ class DiLepton : public EL::Algorithm
   void checkOR(xAOD::IParticleContainer *p); //!
 
 
-  bool isTrigMatch(int yearOpt, xAOD::MuonContainer *muons, xAOD::ElectronContainer* electrons, float met, std::vector<std::string> trigInfo, bool doMatch=true, float metcut=250000.); //
+  bool isTrigMatch(int yearOpt, xAOD::MuonContainer *muons, xAOD::ElectronContainer* electrons, float met, std::vector<std::string> trigInfo, bool doMatch=true, int period=0, float metcut=250000.); //
  
   bool isSignalMuon(xAOD::Muon &mu, float ptcut=10000., float etamax=2.5); //!
   bool isSignalElectron(xAOD::Electron &el, float ptcut=10000., float etamax=2.0); //!

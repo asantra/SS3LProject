@@ -13,7 +13,7 @@ atlas_ctest_setup()
 
 # Set up the analysis project:
 atlas_project( WorkDir 1.0.0
-   	       USE AnalysisBase 21.2.13 )
+   	       USE AnalysisBase 21.2.35 )
 
 # Set up the runtime environment setup script(s):
 lcg_generate_env( SH_FILE ${CMAKE_BINARY_DIR}/${ATLAS_PLATFORM}/env_setup.sh )

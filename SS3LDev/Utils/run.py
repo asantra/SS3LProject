@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 #LocalSample = "Data"
 #InPath = "/afs/cern.ch/work/p/ptornamb/SS3L-Full/Samples/"
 LocalSample = "mc16_13TeV"
-InPath = "/lustre/scratch/epp/atlas/na337/workdir/Analysis2018/Framework/SS3L/Rel21-2-v35/DiLeptonRel21/"
+InPath = "/lustre/scratch/epp/atlas/na337/workdir/Analysis2018/SS3L/Framework/Rel21-2-v35/DiLeptonRel21/"
 
 if not os.environ.get('BASEDIR'):
     print "BASEDIR is not set. Please set it"; sys.exit(1)
@@ -31,6 +31,7 @@ logging.info("LocalOutputDir %s", LocalOutputDir)
 parser = ArgumentParser(description="Runs job locally or creates prun command for grid submission")
 parser.add_argument("--submitDir", help="dir to store the output", default=LocalOutputDir)
 parser.add_argument("--inputDS",   help="input DS from DQ2",       default="none")
+#parser.add_argument("--driver",    help="select where to run",     choices=("LOCAL", "PROOF", "GRID"), default="GRID")
 parser.add_argument("--driver",    help="select where to run",     choices=("LOCAL", "PROOF", "GRID"), default="LOCAL")
 parser.add_argument("--Debug",       type=int, help="Print debug messages", default=0)
 parser.add_argument("--nevents",     type=int, help="number of events to process for all the datasets")
@@ -46,6 +47,7 @@ parser.add_argument("--setLeptons",type=int, help="Leptons for SS 0=Leptons, 1=M
 parser.add_argument("--doSys",     type=int, help="Enables systematic variantions", default=0)
 parser.add_argument("--Trigger",   help="Set trigger name",  default="DILEPTON_MET")
 parser.add_argument("--SysList",   help="Comma-separated list of systematics", default="")
+#parser.add_argument("--SignalRegion", help="Comma-separated list of Signal Regions", default="SRall,SR1b1,SR1b2")
 parser.add_argument("--SignalRegion", help="Comma-separated list of Signal Regions", default="SRall")
 parser.add_argument("--NSignalLeptons", type=int, help="How many leptons have to be signal type", default=3)
 parser.add_argument("--PileupReweighting", type=int, help="Do PileupReweighting for MC [1/0]", default=1)
@@ -67,6 +69,9 @@ if options.overwrite:
     logging.info("overwrite directory %s", options.submitDir)
     shutil.rmtree(options.submitDir, True)
 
+prefix = "Oct1"
+#f= open("download.txt","a")
+#f.write("------------------------------------------------------------")
 
 #Set up the job for xAOD access:
 ROOT.xAOD.Init().ignore();
@@ -74,7 +79,6 @@ ROOT.xAOD.Init().ignore();
 # create a new sample handler to describe the data files we use
 logging.info("creating new sample handler")
 sh_all = ROOT.SH.SampleHandler()
-
 
 if options.inputDS != "none":
   ROOT.SH.scanDQ2 (sh_all, options.inputDS);
@@ -85,9 +89,11 @@ if options.inputDS != "none":
       if z==1: first = current+1
       if z==3:last = current
   short_name = options.inputDS[first:last]
+  print "Short Name: ", short_name
   if short_name.find("*")>-1: short_name = short_name.replace("*","")
   logging.info("Outname %s", short_name)
   SampleName = options.inputDS
+  #print "SampleName: ", SampleName
 
 else :
   search_directories = []
@@ -103,8 +109,16 @@ else :
 # print out the samples we found
 logging.info("%d different datasets found scanning all directories", len(sh_all))
 
+runnumber  = SampleName.split("/")[-1].split(".")[1]
+mc16v      = SampleName.split("/")[-1].split(".")[5]
 SampleName = SampleName.split("/")[-1].split(".")[2]
+
 logging.info("Sample Name: %s", SampleName)
+logging.info("Run Number: %s", runnumber)
+logging.info("MC16 version: %s", mc16v)
+
+#downloadname = "user.nabraham.{0}_{1}.{2}.{3}/".format(prefix,runnumber,SampleName,mc16v)
+#f.write(downloadname+"\n")
 
 # set the name of the tree in our files
 sh_all.setMetaString("nc_tree", "CollectionTree")
@@ -178,7 +192,7 @@ elif (options.driver == "GRID"):
     output = commands.getoutput(command)
     cernname = output.split()[4]
     logging.info("CERN user = %s", cernname)
-    outname = "user.{0}.{1}.{2}/".format(cernname,short_name,options.suffix)
+    outname = "user.{0}.{1}_{2}.{3}.{4}/".format(cernname,prefix,runnumber,SampleName,mc16v)
     logging.info("--OutDS = %s", outname)
     driver.options().setString("nc_outputSampleName", outname)
     driver.options().setDouble("nc_disableAutoRetry", 1)
@@ -188,4 +202,5 @@ elif (options.driver == "GRID"):
 if(options.driver == "LOCAL"):
     logging.info("sent output to %s", LocalOutputDir)
 
+#f.close()
 print "...done"
