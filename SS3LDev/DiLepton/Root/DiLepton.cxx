@@ -663,15 +663,15 @@ EL::StatusCode DiLepton :: initialize (){
     Error(APP_NAME, "Cannot set triggers" );
     return EL::StatusCode::FAILURE;
   }
-  /*if( !this->setTriggers(triggerList2017_PS, "DILEPTON_MET_PRESCALE", 2017) ){
-    Error(APP_NAME, "Cannot set triggers" );
-    return EL::StatusCode::FAILURE;
-  }*/
-  /// modified by Arka
-  if( !this->setTriggers(triggerList2017_PS, TriggerName, 2017) ){
+  if( !this->setTriggers(triggerList2017_PS, "DILEPTON_MET_PRESCALE", 2017) ){
     Error(APP_NAME, "Cannot set triggers" );
     return EL::StatusCode::FAILURE;
   }
+  /// modified by Arka
+  /*if( !this->setTriggers(triggerList2017_PS, TriggerName, 2017) ){
+    Error(APP_NAME, "Cannot set triggers" );
+    return EL::StatusCode::FAILURE;
+  }*/
 
   //Set PDF
   /*if( doPDF && !isData ){
