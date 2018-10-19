@@ -506,73 +506,75 @@ EL::StatusCode DiLepton :: initialize (){
   }
 
   //Set PRW config
-  std::vector<std::string> PileUpConf, PileUpLumiCalc;
-  //std::string prwPath = "$ROOTCOREBIN/data/DiLepton/PileupReweighting/";
-  std::string lumiPath = PathResolverFindCalibDirectory("DiLepton/PileupReweighting/");
+  std::vector<std::string> PileUpConf, PileUpLumiCalc, confFilesMC16d, confFiles_MC16d;
   std::string prwPath = PathResolverFindCalibDirectory("/cvmfs/atlas.cern.ch/repo/sw/database/GroupData/dev/SUSYTools/PRW_AUTOCONFIG/files/");
-  /*switch( mc15 ){
-    case 1:
-    Info("PileupReweighting", "Using mc15%s", "a");
-    PileUpConf.push_back(prwPath+"merged_prw.root");
-    PileUpConf.push_back(prwPath+"mergedSignalsSS3L_prw.root");
-    break;
-    case 2:
-    Info("PileupReweighting", "Using mc15%s", "b");
-    PileUpConf.push_back(prwPath+"my.prw_410000_mc15b.root");
-    break;
-    case 3:
-    Info("PileupReweighting", "Using mc15%s", "c");
-    PileUpConf.push_back(prwPath+"merged_prw_mc15c_latest.root");
-    PileUpConf.push_back(prwPath+"merged_prw_mc15c_signal_latest.root");
-    break;
-    default:
-    Info("PileupReweighting", "Default mc15%s", "c");
-    PileUpConf.push_back(prwPath+"merged_prw_mc15c_latest.root");
-    PileUpConf.push_back(prwPath+"merged_prw_mc15c_signal_latest.root");
-    break;
-    }*/
-  std::cout << "MC16: " << mc16 << std::endl;
 
-  //switch( mc16 ){
-  //  case 2016:
-  //    PileUpLumiCalc.push_back(lumiPath+"PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root"); //2015 data
-  //    PileUpLumiCalc.push_back(lumiPath+"PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root");  /// 2016 data
-  //  case 2017:
-    PileUpLumiCalc.push_back(lumiPath+"physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root"); //2017 data
-  //  case 2018:
-  //    PileUpLumiCalc.push_back(lumiPath+"physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-001.root"); 
-  //}
-
-  //Set shower type
-  int ShowerType = !isData ? SusyObjTool->getMCShowerType(SampleName) : 0;
-
-  //Set other SUSYTools configurations
-  ST::ISUSYObjDef_xAODTool::DataSource DataSource = (isData ? ST::ISUSYObjDef_xAODTool::Data : (isAtlfast ? ST::ISUSYObjDef_xAODTool::AtlfastII : ST::ISUSYObjDef_xAODTool::FullSim));
-  //std::string ConfigFile = "$ROOTCOREBIN/data/DiLepton/ST_DiLepton.conf";
-  std::string ConfigFile = PathResolverFindCalibFile("DiLepton/SS3L_Default.conf");
-
-  ANA_CHECK( SusyObjTool->setProperty("DataSource", DataSource) );
-  ANA_CHECK( SusyObjTool->setProperty("ConfigFile", ConfigFile) ); 
-  ANA_CHECK( SusyObjTool->setProperty("ShowerType", ShowerType) );
-  ANA_CHECK( SusyObjTool->setProperty("DebugMode",  (Debug>1)) );
-  //ANA_CHECK( SusyObjTool->setProperty("PRWConfigFiles",    PileUpConf) );
-  ANA_CHECK( SusyObjTool->setProperty("PRWLumiCalcFiles",  PileUpLumiCalc) );
-  ANA_CHECK( SusyObjTool->setBoolProperty("AutoconfigurePRWTool", true ) );
-
-  if( SusyObjTool->initialize() != StatusCode::SUCCESS){
-    Error( APP_NAME, "Cannot intialize SUSYTools" );
+  const xAOD::EventInfo* eventInfo(0);
+  if( ! m_event->retrieve(eventInfo, "EventInfo").isSuccess() ){
+    Error(APP_NAME, "Failed to retrieve event info collection. Exiting." );
     return EL::StatusCode::FAILURE;
+  }
+
+  if(!isData){
+    int RunNb   = eventInfo->runNumber(); // to select year
+    std::cout << "RunNb: " << RunNb << std::endl;
+    std::string confFiles;
+
+    if(RunNb==284500){
+        PileUpLumiCalc.push_back(PathResolverFindCalibFile("DiLepton/PileupReweighting/PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root")); //2015 data
+        PileUpLumiCalc.push_back(PathResolverFindCalibFile("DiLepton/PileupReweighting/PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root"));  // 2016 data
+        ANA_CHECK( SusyObjTool->setProperty("AutoconfigurePRWTool", true ) );
+    }
+    if(RunNb==300000){
+      confFiles += prwPath+"pileup_mc16d_dsid" + std::to_string(eventInfo->mcChannelNumber()) +".root";
+      confFiles = PathResolverFindCalibFile(confFiles);
+      TFile testF(confFiles.c_str(),"read");
+      if(testF.IsZombie()){
+        ANA_MSG_ERROR( "getPRWConfigFile(): file not found -> " << confFiles );
+        return EL::StatusCode::FAILURE;
+      }
+      else{
+        confFiles_MC16d.push_back(confFiles);
+        ANA_MSG_INFO( "getPRWConfigFile(): setting PRW conf to " << confFiles );
+      }
+      PileUpLumiCalc.push_back(PathResolverFindCalibFile("DiLepton/PileupReweighting/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root")); //2017 data
+      confFilesMC16d.push_back(PathResolverFindCalibFile("DiLepton/PileupReweighting/physics_25ns_Triggerno17e33prim.actualMu.OflLumi-13TeV-010.root"));  // needed for mc16d
+      ANA_CHECK( SusyObjTool->setProperty("PRWConfigFiles", confFilesMC16d) );
+      ANA_CHECK( SusyObjTool->setProperty("PRWConfigFiles", confFiles_MC16d) );
+    }
+    //    PileUpLumiCalc.push_back("DiLepton/PileupReweighting/physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-001.root"); //2018 data
   } 
-  Info( APP_NAME, "SUSYObjDef_xAOD initialized... " );
-  Info( APP_NAME, "ConfigFile = %s", ConfigFile.c_str());
-  Info( APP_NAME, "IsData     = %i", isData);
-  Info( APP_NAME, "IsAtlfast  = %i", isAtlfast);
-  Info( APP_NAME, "ShowerType = %i", ShowerType);
 
-  //Reset systematics
-  if( !this->resetSystematics() ){  
-    Error(APP_NAME, "Cannot reset systematics" );
-    return EL::StatusCode::FAILURE;
+    //Set shower type
+    int ShowerType = !isData ? SusyObjTool->getMCShowerType(SampleName) : 0;
+
+    //Set other SUSYTools configurations
+    ST::ISUSYObjDef_xAODTool::DataSource DataSource = (isData ? ST::ISUSYObjDef_xAODTool::Data : (isAtlfast ? ST::ISUSYObjDef_xAODTool::AtlfastII : ST::ISUSYObjDef_xAODTool::FullSim));
+    std::string ConfigFile = PathResolverFindCalibFile("DiLepton/SS3L_Default.conf");
+
+    ANA_CHECK( SusyObjTool->setProperty("DataSource", DataSource) );
+    ANA_CHECK( SusyObjTool->setProperty("ConfigFile", ConfigFile) ); 
+    ANA_CHECK( SusyObjTool->setProperty("ShowerType", ShowerType) );
+    ANA_CHECK( SusyObjTool->setProperty("DebugMode",  (Debug>1)) );
+    ANA_CHECK( SusyObjTool->setProperty("PRWLumiCalcFiles",  PileUpLumiCalc) );
+    //ANA_CHECK( SusyObjTool->setBoolProperty("AutoconfigurePRWTool", true ) );
+
+    if( SusyObjTool->initialize() != StatusCode::SUCCESS){
+      Error( APP_NAME, "Cannot intialize SUSYTools" );
+      return EL::StatusCode::FAILURE;
+    }
+  
+
+    Info( APP_NAME, "SUSYObjDef_xAOD initialized... " );
+    Info( APP_NAME, "ConfigFile = %s", ConfigFile.c_str());
+    Info( APP_NAME, "IsData     = %i", isData);
+    Info( APP_NAME, "IsAtlfast  = %i", isAtlfast);
+    Info( APP_NAME, "ShowerType = %i", ShowerType);
+
+    //Reset systematics
+    if( !this->resetSystematics() ){  
+      Error(APP_NAME, "Cannot reset systematics" );
+      return EL::StatusCode::FAILURE;
   }
 
   //Set some other flags
@@ -633,11 +635,6 @@ EL::StatusCode DiLepton :: initialize (){
   Info(APP_NAME, "Initializing Tool: \t %s", "GoodRunsListSelectionTool"); 
   GRLTool = new GoodRunsListSelectionTool("GoodRunsListSelectionTool");
   std::vector<std::string> GRLs;
-  //TString GRL2015 = "$ROOTCOREBIN/data/DiLepton/GRL/data15_13TeV.periodAllYear_DetStatus-v79-repro20-02_DQDefects-00-02-02_PHYS_StandardGRL_All_Good_25ns.xml";
-  //TString GRL2016 = "$ROOTCOREBIN/data/DiLepton/GRL/data16_13TeV.periodAllYear_DetStatus-v88-pro20-21_DQDefects-00-02-04_PHYS_StandardGRL_All_Good_25ns.xml";
-  /*TString GRL2015 = PathResolverFindCalibFile("DiLepton/GRL/data15_13TeV.periodAllYear_DetStatus-v89-pro21-02_Unknown_PHYS_StandardGRL_All_Good_25ns.xml");
-    TString GRL2016 = PathResolverFindCalibFile( "DiLepton/GRL/data16_13TeV.periodAllYear_DetStatus-v89-pro21-01_DQDefects-00-02-04_PHYS_StandardGRL_All_Good_25ns.xml");
-    TString GRL2017 = PathResolverFindCalibFile( "data17_13TeV.periodAllYear_DetStatus-v97-pro21-13_Unknown_PHYS_StandardGRL_All_Good_25ns_Triggerno17e33prim.xml");*/
   TString GRL2015 = PathResolverFindCalibFile("DiLepton/GRL/physics_25ns_21.0.19_2015.xml");
   TString GRL2016 = PathResolverFindCalibFile("DiLepton/GRL/physics_25ns_21.0.19_2016.xml");
   TString GRL2017 = PathResolverFindCalibFile("DiLepton/GRL/data17_13TeV.periodAllYear_DetStatus-v97-pro21-13_Unknown_PHYS_StandardGRL_All_Good_25ns_Triggerno17e33prim.xml");
@@ -807,27 +804,14 @@ EL::StatusCode DiLepton :: execute (){
   if(eventInfo->eventType( xAOD::EventInfo::IS_SIMULATION )) isMC = true;
   else isMC = false;
 
-  RunNumber   = eventInfo->runNumber();
+  RunNumber   = eventInfo->runNumber(); // can be used to select year
   EventNumber = eventInfo->eventNumber();
   IntPerX = SusyObjTool->GetCorrectedAverageInteractionsPerCrossing();
-  if (
-  //    EventNumber!=208049 &&
-  //    EventNumber!=240476 &&
-  //    EventNumber!=245964 &&
-  //    EventNumber!=276233 &&
-  //    EventNumber!=278982 &&
-  //    EventNumber!=313214 &&
-  //    EventNumber!=330860 &&
-  //    EventNumber!=344346 &&
-      EventNumber!=388841 
-  //    EventNumber!=208182 &&
-  //    EventNumber!=214402 &&
-  //    EventNumber!=234546 &&
-  //    EventNumber!=261722 &&
-  //    EventNumber!=319986
-     ) {return true;
-      if(Debug){std::cout << "Found EventNumber: " << EventNumber << std::endl; }
-  }
+  //if (
+  //    EventNumber!=388841 
+  //   ) {return true;
+  //    if(Debug){std::cout << "Found EventNumber: " << EventNumber << std::endl; }
+  //}
 
 
   //Getting informations on lumi block and average pile-up (mainly for trigger studies) PT-04-07-'18
@@ -842,7 +826,7 @@ EL::StatusCode DiLepton :: execute (){
   //return EL::StatusCode::SUCCESS;
 
   if(Debug){std::cout << APP_NAME << " DEBUG \t " 
-    << Form("EventNumber %ld \t RunNumber %ld \t MCId %i \t IntPerX %i", EventNumber, RunNumber, MCId, IntPerX) << std::endl;}
+    << Form("EventNumber %ld \t MC Event RunNumber %ld \t MCId %i \t IntPerX %i", EventNumber, RunNumber, MCId, IntPerX) << std::endl;}
 
   //PileUp Reweighting
   if(isMC) ANA_CHECK( SusyObjTool->ApplyPRWTool() );
@@ -861,12 +845,6 @@ EL::StatusCode DiLepton :: execute (){
     if (eventrunNumber>304011) dataPeriod=3;
   }
 
-  //if(RunNumber<290000) 
-  //  configYear = 2015;/// 2015 data
-  //if(RunNumber>290000 && RunNumber<320000)
-  //  configYear = 2016;
-  //if (RunNumber>320000)
-  //  configYear = 2017;/// 2016 data
     
   if(Debug){std::cout << APP_NAME <<" DEBUG \t PileupReweightingTool::Pileupweight "<<PileUpWeight<<"  RandomRunNumber "<<randomRN<<"   RunNumber   "<<eventrunNumber<<"  PileupHash "<<PileUpHash<<"  configYear "<<configYear<< std::endl;} 
   EventWeightPileUp = EventWeight*PileUpWeight;
@@ -1128,16 +1106,15 @@ EL::StatusCode DiLepton :: execute (){
             prescale = 1;
             if( !isTriggered(triggerList2017_PS, triggerInfo) ) passTrigger = false;
             if( !isTriggeredMet(triggerList2017_PS, EtMiss, triggerInfo) ) passTrigger = false;
+            if(Debug){std::cout << "Prescaled::RunNumber: " << eventrunNumber << std::endl;}
           }
           if (eventrunNumber<326834 || eventrunNumber>328393){ //unprescaled
             if( !isTriggered(triggerList2017, triggerInfo) ) passTrigger = false;
             if( !isTriggeredMet(triggerList2017, EtMiss, triggerInfo) ) passTrigger = false;
+            if(Debug){std::cout << "Unprescaled::RunNumber: " << eventrunNumber << std::endl;}
           }
           isTriggered(triggerList2017, triggerInfo);
           break;
-          //if( !isTriggered(triggerList2017, triggerInfo) ) passTrigger = false;
-          //if( !isTriggeredMet(triggerList2017, EtMiss, triggerInfo) ) passTrigger = false;
-          //break;
         default: break;
       }
       if( !passTrigger ) continue;
