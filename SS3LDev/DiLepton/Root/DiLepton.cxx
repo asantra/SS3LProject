@@ -1128,27 +1128,10 @@ EL::StatusCode DiLepton :: execute (){
             prescale = 1;
             if( !isTriggered(triggerList2017_PS, triggerInfo) ) passTrigger = false;
             if( !isTriggeredMet(triggerList2017_PS, EtMiss, triggerInfo) ) passTrigger = false;
-            //if(Debug){std::cout << "Prescaled::RunNumber: " << eventrunNumber << std::endl;}
-            //if(!(SusyObjTool->IsTrigPassed("HLT_2e24_lhvloose_nod0") ||
-            //    SusyObjTool->IsTrigPassed("HLT_e17_lhloose_nod0_mu14") ||
-            //    SusyObjTool->IsTrigPassed("HLT_mu22_mu8noL1") ||
-            //   (EtMiss>250000 && SusyObjTool->IsTrigPassed("HLT_xe110_pufit_L1XE55")))) {
-            //    if(Debug){std::cout << "Passed unprescaled" << std::endl;}
-            //    passTrigger = false;
-            //  }
           }
           if (eventrunNumber<326834 || eventrunNumber>328393){ //unprescaled
             if( !isTriggered(triggerList2017, triggerInfo) ) passTrigger = false;
             if( !isTriggeredMet(triggerList2017, EtMiss, triggerInfo) ) passTrigger = false;
-          //  if(Debug){std::cout << "Unprescaled::RunNumber: " << eventrunNumber << std::endl;}
-          //  if(SusyObjTool->IsTrigPassed("HLT_2e24_lhvloose_nod0") ||
-          //      SusyObjTool->IsTrigPassed("HLT_2e17_lhvloose_nod0_L12EM15VHI") ||
-          //      SusyObjTool->IsTrigPassed("HLT_e17_lhloose_nod0_mu14") ||
-          //      SusyObjTool->IsTrigPassed("HLT_mu22_mu8noL1") ||
-          //      (EtMiss>250000 && SusyObjTool->IsTrigPassed("HLT_xe110_pufit_L1XE55"))) {
-          //      passTrigger = true;
-          //      if(Debug){std::cout << "Passed unprescaled" << std::endl;}
-          //    }
           }
           isTriggered(triggerList2017, triggerInfo);
           break;
