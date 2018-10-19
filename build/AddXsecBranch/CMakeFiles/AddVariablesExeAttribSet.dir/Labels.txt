@@ -1,0 +1,5 @@
+# Target labels
+ AddXSecBranch
+# Source files and their labels
+/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/AddXsecBranch/CMakeFiles/AddVariablesExeAttribSet
+/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/AddXsecBranch/CMakeFiles/AddVariablesExeAttribSet.rule

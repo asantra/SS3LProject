@@ -1,0 +1,6 @@
+# Target labels
+ AddXSecBranch
+# Source files and their labels
+/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/jobOptions/AddXSecBranch/addxsecbranch.py
+/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/SS3LDev/AddXsecBranch/share/addxsecbranch.py
+/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/jobOptions/AddXSecBranch/addxsecbranch.py.rule

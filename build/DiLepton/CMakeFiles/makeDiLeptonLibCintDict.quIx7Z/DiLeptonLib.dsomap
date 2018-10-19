@@ -1,0 +1,8 @@
+{ decls }
+namespace std {  }
+
+[ libDiLeptonLib.so ]
+# List of selected classes
+class DiLepton
+class vector<TLorentzVector>
+header DiLepton/DiLepton.h

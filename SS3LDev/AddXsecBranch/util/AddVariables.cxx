@@ -15,6 +15,8 @@
 
 
 #include <ROOT/TDataFrame.hxx>
+#include <ROOT/RTDataFrame.hxx>
+using TDataFrame = ROOT::RDataFrame;
 
 using namespace std;
 
@@ -35,7 +37,7 @@ void Export(string in_file_name, string out_file_name) {
     return;
   }
 
-  ROOT::Experimental::TDataFrame df(tree_name.c_str(), f_in);
+  TDataFrame df(tree_name.c_str(), f_in);
 
 
   auto colNames = df.GetColumnNames();

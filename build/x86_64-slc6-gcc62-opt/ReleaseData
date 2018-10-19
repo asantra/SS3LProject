@@ -1,0 +1,9 @@
+[release_metadata]
+release:1.0.0
+nightly name:arkaWork
+project name:WorkDir
+nightly release:6b97d61
+date:2018-10-19T2305
+compiler:GNU-6.2.0
+cxxpath:/cvmfs/sft.cern.ch/lcg/releases/gcc/6.2.0-2bc78/x86_64-slc6-gcc62-opt/bin/g++
+cmake:3.11.0

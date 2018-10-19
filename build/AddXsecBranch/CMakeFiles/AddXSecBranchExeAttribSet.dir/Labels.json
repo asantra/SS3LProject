@@ -1,0 +1,19 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/AddXsecBranch/CMakeFiles/AddXSecBranchExeAttribSet"
+		},
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/AddXsecBranch/CMakeFiles/AddXSecBranchExeAttribSet.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"AddXSecBranch"
+		],
+		"name" : "AddXSecBranchExeAttribSet"
+	}
+}

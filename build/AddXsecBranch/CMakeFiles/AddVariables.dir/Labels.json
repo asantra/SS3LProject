@@ -1,0 +1,16 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/SS3LDev/AddXsecBranch/util/AddVariables.cxx"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"AddXSecBranch"
+		],
+		"name" : "AddVariables"
+	}
+}

@@ -1,0 +1,13 @@
+# Target labels
+ DiLepton
+# Source files and their labels
+/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/data/DiLepton/GRL
+/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/data/DiLepton/PileupReweighting
+/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/data/DiLepton/SS3L_Default.conf
+/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/data/DiLepton/ST_DiLepton.conf
+/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/SS3LDev/DiLepton/data/SS3L_Default.conf
+/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/SS3LDev/DiLepton/data/ST_DiLepton.conf
+/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/data/DiLepton/GRL.rule
+/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/data/DiLepton/PileupReweighting.rule
+/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/data/DiLepton/SS3L_Default.conf.rule
+/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/data/DiLepton/ST_DiLepton.conf.rule

@@ -1,0 +1,5 @@
+# Target labels
+ DiLepton
+# Source files and their labels
+/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/include/DiLepton
+/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/include/DiLepton.rule

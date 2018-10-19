@@ -1,0 +1,19 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/include/DiLepton"
+		},
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/include/DiLepton.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"DiLepton"
+		],
+		"name" : "DiLeptonHeaderInstall"
+	}
+}

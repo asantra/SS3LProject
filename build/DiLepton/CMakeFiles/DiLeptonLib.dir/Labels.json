@@ -1,0 +1,32 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/SS3LDev/DiLepton/DiLepton/DiLepton.h"
+		},
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/SS3LDev/DiLepton/DiLepton/DileptonTriggerWeight.h"
+		},
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/SS3LDev/DiLepton/Root/DiLepton.cxx"
+		},
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/DiLepton/CMakeFiles/DiLeptonLibCintDict.cxx",
+			"labels" : 
+			[
+				"DiLepton"
+			]
+		},
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/DiLepton/CMakeFiles/DiLeptonLibCintDict.cxx.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"DiLepton"
+		],
+		"name" : "DiLeptonLib"
+	}
+}

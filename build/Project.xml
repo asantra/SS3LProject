@@ -1,0 +1,179 @@
+<!-- Auto-generated file, please do not edit -->
+<Project name="WorkDir" >
+   <SubProject name="SUSYTools" >
+   </SubProject>
+   <SubProject name="AddXSecBranch" >
+      <Dependency name="SUSYTools" />
+   </SubProject>
+   <SubProject name="AthContainers" >
+   </SubProject>
+   <SubProject name="AsgTools" >
+   </SubProject>
+   <SubProject name="xAODRootAccess" >
+   </SubProject>
+   <SubProject name="GoodRunsLists" >
+   </SubProject>
+   <SubProject name="FourMomUtils" >
+   </SubProject>
+   <SubProject name="xAODBase" >
+   </SubProject>
+   <SubProject name="xAODCaloEvent" >
+   </SubProject>
+   <SubProject name="xAODCutFlow" >
+   </SubProject>
+   <SubProject name="xAODEgamma" >
+   </SubProject>
+   <SubProject name="xAODEventInfo" >
+   </SubProject>
+   <SubProject name="xAODJet" >
+   </SubProject>
+   <SubProject name="xAODMetaDataCnv" >
+   </SubProject>
+   <SubProject name="xAODMissingET" >
+   </SubProject>
+   <SubProject name="xAODMuon" >
+   </SubProject>
+   <SubProject name="xAODTau" >
+   </SubProject>
+   <SubProject name="xAODTracking" >
+   </SubProject>
+   <SubProject name="xAODTrigger" >
+   </SubProject>
+   <SubProject name="xAODTriggerCnv" >
+   </SubProject>
+   <SubProject name="xAODTruth" >
+   </SubProject>
+   <SubProject name="EventLoop" >
+   </SubProject>
+   <SubProject name="EventLoopGrid" >
+   </SubProject>
+   <SubProject name="EventLoopAlgs" >
+   </SubProject>
+   <SubProject name="InDetTrackSelectionTool" >
+   </SubProject>
+   <SubProject name="AssociationUtils" >
+   </SubProject>
+   <SubProject name="IsolationSelection" >
+   </SubProject>
+   <SubProject name="PATInterfaces" >
+   </SubProject>
+   <SubProject name="PMGTools" >
+   </SubProject>
+   <SubProject name="PileupReweighting" >
+   </SubProject>
+   <SubProject name="RootCoreUtils" >
+   </SubProject>
+   <SubProject name="SampleHandler" >
+   </SubProject>
+   <SubProject name="ElectronEfficiencyCorrection" >
+   </SubProject>
+   <SubProject name="ElectronPhotonFourMomentumCorrection" >
+   </SubProject>
+   <SubProject name="ElectronPhotonSelectorTools" >
+   </SubProject>
+   <SubProject name="IsolationCorrections" >
+   </SubProject>
+   <SubProject name="ElectronPhotonShowerShapeFudgeTool" >
+   </SubProject>
+   <SubProject name="PhotonEfficiencyCorrection" >
+   </SubProject>
+   <SubProject name="JetSelectorTools" >
+   </SubProject>
+   <SubProject name="xAODBTaggingEfficiency" >
+   </SubProject>
+   <SubProject name="MuonMomentumCorrections" >
+   </SubProject>
+   <SubProject name="MuonEfficiencyCorrections" >
+   </SubProject>
+   <SubProject name="MuonSelectorTools" >
+   </SubProject>
+   <SubProject name="TauAnalysisTools" >
+   </SubProject>
+   <SubProject name="TriggeranalysisInterfaces" >
+   </SubProject>
+   <SubProject name="JetTileCorrection" >
+   </SubProject>
+   <SubProject name="JetCalibTools" >
+   </SubProject>
+   <SubProject name="JetJvtEfficiency" >
+   </SubProject>
+   <SubProject name="JetMomentTools" >
+   </SubProject>
+   <SubProject name="JetResolution" >
+   </SubProject>
+   <SubProject name="JetUncertainties" >
+   </SubProject>
+   <SubProject name="JetReclustering" >
+   </SubProject>
+   <SubProject name="METUtilities" >
+   </SubProject>
+   <SubProject name="METInterface" >
+   </SubProject>
+   <SubProject name="PathResolver" >
+   </SubProject>
+   <SubProject name="TrigDecisionTool" >
+   </SubProject>
+   <SubProject name="TriggerMatchingTool" >
+   </SubProject>
+   <SubProject name="TrigConfxAOD" >
+   </SubProject>
+   <SubProject name="DiLepton" >
+      <Dependency name="AthContainers" />
+      <Dependency name="AsgTools" />
+      <Dependency name="xAODRootAccess" />
+      <Dependency name="GoodRunsLists" />
+      <Dependency name="FourMomUtils" />
+      <Dependency name="xAODBase" />
+      <Dependency name="xAODCaloEvent" />
+      <Dependency name="xAODCutFlow" />
+      <Dependency name="xAODEgamma" />
+      <Dependency name="xAODEventInfo" />
+      <Dependency name="xAODJet" />
+      <Dependency name="xAODMetaDataCnv" />
+      <Dependency name="xAODMissingET" />
+      <Dependency name="xAODMuon" />
+      <Dependency name="xAODTau" />
+      <Dependency name="xAODTracking" />
+      <Dependency name="xAODTrigger" />
+      <Dependency name="xAODTriggerCnv" />
+      <Dependency name="xAODTruth" />
+      <Dependency name="EventLoop" />
+      <Dependency name="EventLoopGrid" />
+      <Dependency name="EventLoopAlgs" />
+      <Dependency name="InDetTrackSelectionTool" />
+      <Dependency name="AssociationUtils" />
+      <Dependency name="IsolationSelection" />
+      <Dependency name="PATInterfaces" />
+      <Dependency name="PMGTools" />
+      <Dependency name="PileupReweighting" />
+      <Dependency name="RootCoreUtils" />
+      <Dependency name="SampleHandler" />
+      <Dependency name="ElectronEfficiencyCorrection" />
+      <Dependency name="ElectronPhotonFourMomentumCorrection" />
+      <Dependency name="ElectronPhotonSelectorTools" />
+      <Dependency name="IsolationCorrections" />
+      <Dependency name="ElectronPhotonShowerShapeFudgeTool" />
+      <Dependency name="PhotonEfficiencyCorrection" />
+      <Dependency name="JetSelectorTools" />
+      <Dependency name="xAODBTaggingEfficiency" />
+      <Dependency name="MuonMomentumCorrections" />
+      <Dependency name="MuonEfficiencyCorrections" />
+      <Dependency name="MuonSelectorTools" />
+      <Dependency name="SUSYTools" />
+      <Dependency name="TauAnalysisTools" />
+      <Dependency name="TriggeranalysisInterfaces" />
+      <Dependency name="JetTileCorrection" />
+      <Dependency name="JetCalibTools" />
+      <Dependency name="JetJvtEfficiency" />
+      <Dependency name="JetMomentTools" />
+      <Dependency name="JetResolution" />
+      <Dependency name="JetUncertainties" />
+      <Dependency name="JetReclustering" />
+      <Dependency name="METUtilities" />
+      <Dependency name="METInterface" />
+      <Dependency name="PathResolver" />
+      <Dependency name="TrigDecisionTool" />
+      <Dependency name="TriggerMatchingTool" />
+      <Dependency name="TrigConfxAOD" />
+   </SubProject>
+</Project>

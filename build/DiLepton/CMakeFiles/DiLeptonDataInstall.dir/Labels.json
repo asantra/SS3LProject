@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/data/DiLepton/GRL"
+		},
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/data/DiLepton/PileupReweighting"
+		},
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/data/DiLepton/SS3L_Default.conf"
+		},
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/data/DiLepton/ST_DiLepton.conf"
+		},
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/SS3LDev/DiLepton/data/SS3L_Default.conf"
+		},
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/SS3LDev/DiLepton/data/ST_DiLepton.conf"
+		},
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/data/DiLepton/GRL.rule"
+		},
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/data/DiLepton/PileupReweighting.rule"
+		},
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/data/DiLepton/SS3L_Default.conf.rule"
+		},
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/data/DiLepton/ST_DiLepton.conf.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"DiLepton"
+		],
+		"name" : "DiLeptonDataInstall"
+	}
+}

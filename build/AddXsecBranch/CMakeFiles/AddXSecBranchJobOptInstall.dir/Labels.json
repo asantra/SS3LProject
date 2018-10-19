@@ -1,0 +1,22 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/jobOptions/AddXSecBranch/addxsecbranch.py"
+		},
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/SS3LDev/AddXsecBranch/share/addxsecbranch.py"
+		},
+		{
+			"file" : "/afs/cern.ch/work/a/asantra/public/BTaggingNew/SS3Lep/build/x86_64-slc6-gcc62-opt/jobOptions/AddXSecBranch/addxsecbranch.py.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"AddXSecBranch"
+		],
+		"name" : "AddXSecBranchJobOptInstall"
+	}
+}
