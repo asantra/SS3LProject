@@ -484,6 +484,7 @@ EL::StatusCode DiLepton :: initialize (){
   Info( APP_NAME, "Starting initialize");
   Info( APP_NAME, "Sample name       = %s",  SampleName.c_str() );
   Info( APP_NAME, "mc15[a=1|b=2|c=3] = %i",  (int)mc15 ); 
+  Info( APP_NAME, "mc16[2015/2016/2017/2018] = %i",  (int)mc16 ); 
   Info( APP_NAME, "Debug messages    = %i",  (int)Debug );
   Info( APP_NAME, "Create Histos     = %i",  (int)makeHist );
   Info( APP_NAME, "Create TTree      = %i",  (int)makeTree );
@@ -530,19 +531,16 @@ EL::StatusCode DiLepton :: initialize (){
     PileUpConf.push_back(prwPath+"merged_prw_mc15c_signal_latest.root");
     break;
     }*/
+  std::cout << "MC16: " << mc16 << std::endl;
 
-  //if(isMC) ANA_CHECK( SusyObjTool->ApplyPRWTool() );
-  //PileUpWeight = isMC ? this->getPileupWeight() : 1.;
-  //PileUpHash   = isMC ? this->getPileupHash()   : 1.;
-  //int configYear = SusyObjTool->treatAsYear();  
-  //ANA_CHECK( SusyObjTool->setBoolProperty("AutoconfigurePRWTool", true ) );  
-  Info("PileupReweighting", "Adding lumicalc files");
-  //if (configYear==2015 || configYear==2016) {
-    PileUpLumiCalc.push_back(lumiPath+"PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root"); //2015 data
-    PileUpLumiCalc.push_back(lumiPath+"PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root");  /// 2016 data
-  //}
-  //if (configYear==2017){
-  //  PileUpLumiCalc.push_back(lumiPath+"physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root"); //2017 data
+  //switch( mc16 ){
+  //  case 2016:
+  //    PileUpLumiCalc.push_back(lumiPath+"PHYS_StandardGRL_All_Good_25ns_276262-284484_OflLumi-13TeV-008.root"); //2015 data
+  //    PileUpLumiCalc.push_back(lumiPath+"PHYS_StandardGRL_All_Good_25ns_297730-311481_OflLumi-13TeV-009.root");  /// 2016 data
+  //  case 2017:
+    PileUpLumiCalc.push_back(lumiPath+"physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-010.root"); //2017 data
+  //  case 2018:
+  //    PileUpLumiCalc.push_back(lumiPath+"physics_25ns_Triggerno17e33prim.lumicalc.OflLumi-13TeV-001.root"); 
   //}
 
   //Set shower type
@@ -643,10 +641,12 @@ EL::StatusCode DiLepton :: initialize (){
   TString GRL2015 = PathResolverFindCalibFile("DiLepton/GRL/physics_25ns_21.0.19_2015.xml");
   TString GRL2016 = PathResolverFindCalibFile("DiLepton/GRL/physics_25ns_21.0.19_2016.xml");
   TString GRL2017 = PathResolverFindCalibFile("DiLepton/GRL/data17_13TeV.periodAllYear_DetStatus-v97-pro21-13_Unknown_PHYS_StandardGRL_All_Good_25ns_Triggerno17e33prim.xml");
+  TString GRL2018 = PathResolverFindCalibFile("DiLepton/GRL/data18_13TeV.periodAllYear_DetStatus-v102-pro22-03_Unknown_PHYS_StandardGRL_All_Good_25ns_Triggerno17e33prim.xml");
 
   GRLs.push_back( GRL2015.Data() );
   GRLs.push_back( GRL2016.Data() );
   GRLs.push_back( GRL2017.Data() );
+  GRLs.push_back( GRL2018.Data() );
   ANA_CHECK( GRLTool->setProperty( "GoodRunsListVec", GRLs) );
   ANA_CHECK( GRLTool->setProperty( "PassThrough", false) ); 
   ANA_CHECK( GRLTool->initialize() );
@@ -663,6 +663,10 @@ EL::StatusCode DiLepton :: initialize (){
     return EL::StatusCode::FAILURE;
   }
   if( !this->setTriggers(triggerList2017, TriggerName, 2017) ){
+    Error(APP_NAME, "Cannot set triggers" );
+    return EL::StatusCode::FAILURE;
+  }
+  if( !this->setTriggers(triggerList2017_PS, "DILEPTON_MET_PRESCALE", 2017) ){
     Error(APP_NAME, "Cannot set triggers" );
     return EL::StatusCode::FAILURE;
   }
@@ -806,13 +810,24 @@ EL::StatusCode DiLepton :: execute (){
   RunNumber   = eventInfo->runNumber();
   EventNumber = eventInfo->eventNumber();
   IntPerX = SusyObjTool->GetCorrectedAverageInteractionsPerCrossing();
-  //if (
-  //    EventNumber!=181614 &&
-  //    EventNumber!=182196 &&
-  //    EventNumber!=189358 &&
-  //    EventNumber!=195368 &&
-  //    EventNumber!=196354
-  // ) {return true;}
+  if (
+  //    EventNumber!=208049 &&
+  //    EventNumber!=240476 &&
+  //    EventNumber!=245964 &&
+  //    EventNumber!=276233 &&
+  //    EventNumber!=278982 &&
+  //    EventNumber!=313214 &&
+  //    EventNumber!=330860 &&
+  //    EventNumber!=344346 &&
+      EventNumber!=388841 
+  //    EventNumber!=208182 &&
+  //    EventNumber!=214402 &&
+  //    EventNumber!=234546 &&
+  //    EventNumber!=261722 &&
+  //    EventNumber!=319986
+     ) {return true;
+      if(Debug){std::cout << "Found EventNumber: " << EventNumber << std::endl; }
+  }
 
 
   //Getting informations on lumi block and average pile-up (mainly for trigger studies) PT-04-07-'18
@@ -853,7 +868,7 @@ EL::StatusCode DiLepton :: execute (){
   //if (RunNumber>320000)
   //  configYear = 2017;/// 2016 data
     
-  if(Debug){std::cout << APP_NAME <<" DEBUG \t PileupReweightingTool::Pileupweight "<<PileUpWeight<<"  RandomRunNumber "<<randomRN<<"  PileupHash "<<PileUpHash<<"  configYear "<<configYear<< std::endl;} 
+  if(Debug){std::cout << APP_NAME <<" DEBUG \t PileupReweightingTool::Pileupweight "<<PileUpWeight<<"  RandomRunNumber "<<randomRN<<"   RunNumber   "<<eventrunNumber<<"  PileupHash "<<PileUpHash<<"  configYear "<<configYear<< std::endl;} 
   EventWeightPileUp = EventWeight*PileUpWeight;
   if(Debug){std::cout << APP_NAME <<" DEBUG \t Event weight "<<  EventWeight <<"\t  weight*PileUp "<< EventWeightPileUp << std::endl;}
 
@@ -1097,6 +1112,7 @@ EL::StatusCode DiLepton :: execute (){
       if(Debug){std::cout << APP_NAME << " DEBUG \t EtMiss " << EtMiss << "  EtMissPhi " << EtMissPhi << std::endl;}
 
       //Pass trigger
+      bool prescale = 0;
       bool passTrigger = true;
       switch( configYear ){
         case 2015:
@@ -1108,9 +1124,37 @@ EL::StatusCode DiLepton :: execute (){
           if( !isTriggeredMet2016(triggerList2016, EtMiss, triggerInfo, dataPeriod) ) passTrigger = false; 
           break;
         case 2017:
-          if( !isTriggered(triggerList2017, triggerInfo) ) passTrigger = false;
-          if( !isTriggeredMet(triggerList2017, EtMiss, triggerInfo) ) passTrigger = false;
+          if (eventrunNumber>=326834 && eventrunNumber<=328393){ //prescaled
+            prescale = 1;
+            if( !isTriggered(triggerList2017_PS, triggerInfo) ) passTrigger = false;
+            if( !isTriggeredMet(triggerList2017_PS, EtMiss, triggerInfo) ) passTrigger = false;
+            //if(Debug){std::cout << "Prescaled::RunNumber: " << eventrunNumber << std::endl;}
+            //if(!(SusyObjTool->IsTrigPassed("HLT_2e24_lhvloose_nod0") ||
+            //    SusyObjTool->IsTrigPassed("HLT_e17_lhloose_nod0_mu14") ||
+            //    SusyObjTool->IsTrigPassed("HLT_mu22_mu8noL1") ||
+            //   (EtMiss>250000 && SusyObjTool->IsTrigPassed("HLT_xe110_pufit_L1XE55")))) {
+            //    if(Debug){std::cout << "Passed unprescaled" << std::endl;}
+            //    passTrigger = false;
+            //  }
+          }
+          if (eventrunNumber<326834 || eventrunNumber>328393){ //unprescaled
+            if( !isTriggered(triggerList2017, triggerInfo) ) passTrigger = false;
+            if( !isTriggeredMet(triggerList2017, EtMiss, triggerInfo) ) passTrigger = false;
+          //  if(Debug){std::cout << "Unprescaled::RunNumber: " << eventrunNumber << std::endl;}
+          //  if(SusyObjTool->IsTrigPassed("HLT_2e24_lhvloose_nod0") ||
+          //      SusyObjTool->IsTrigPassed("HLT_2e17_lhvloose_nod0_L12EM15VHI") ||
+          //      SusyObjTool->IsTrigPassed("HLT_e17_lhloose_nod0_mu14") ||
+          //      SusyObjTool->IsTrigPassed("HLT_mu22_mu8noL1") ||
+          //      (EtMiss>250000 && SusyObjTool->IsTrigPassed("HLT_xe110_pufit_L1XE55"))) {
+          //      passTrigger = true;
+          //      if(Debug){std::cout << "Passed unprescaled" << std::endl;}
+          //    }
+          }
+          isTriggered(triggerList2017, triggerInfo);
           break;
+          //if( !isTriggered(triggerList2017, triggerInfo) ) passTrigger = false;
+          //if( !isTriggeredMet(triggerList2017, EtMiss, triggerInfo) ) passTrigger = false;
+          //break;
         default: break;
       }
       if( !passTrigger ) continue;
@@ -1267,8 +1311,8 @@ EL::StatusCode DiLepton :: execute (){
       for( ; el_itr != el_end; ++el_itr ) {
         //this->isSignalElectron( **el_itr );
         this->isSignalElectron( **el_itr,20000,2. );
-        if(Debug){std::cout << " Is Signal Electron: " << this->isSignalElectron( **el_itr,20000,2. ) << std::endl;}
-        if(Debug){std::cout << " Get Quality: " << getQuality( **el_itr ) << std::endl;}
+        //if(Debug){std::cout << " Is Signal Electron: " << this->isSignalElectron( **el_itr,20000,2. ) << std::endl;}
+        //if(Debug){std::cout << " Get Quality: " << getQuality( **el_itr ) << std::endl;}
         PrintInfo(*el_itr, APP_NAME, Debug);
       }
 
@@ -1500,7 +1544,7 @@ EL::StatusCode DiLepton :: execute (){
       cutflow_file_SS << EventNumber << "\n";
 
       //Trigger matching
-      bool trigMatched = this->isTrigMatch(configYear, GoodMuons, GoodElectrons, EtMiss, triggerInfo, true, dataPeriod);
+      bool trigMatched = this->isTrigMatch(configYear, GoodMuons, GoodElectrons, EtMiss, triggerInfo, true, dataPeriod, prescale);
       if( !trigMatched ) continue;
       FillHisto(hCutflow, CutFlowIndex, nom);
       CutFlowIndex++;
@@ -2079,14 +2123,6 @@ bool DiLepton :: setTriggers(std::vector<std::string> &trigList, std::string tri
   PileUpWeight = isMC ? this->getPileupWeight() : 1.;
   PileUpHash   = isMC ? this->getPileupHash()   : 1.;
 
-  int eventrunNumber = SusyObjTool->GetRunNumber();  
-
-  if (option==2017){
-    if (eventrunNumber>=327103 && eventrunNumber<=328374) trigname="DILEPTON_MET_PRESCALE"; 
-    //if (eventrunNumber>=326834 && eventrunNumber<=328393) trigname="DILEPTON_MET_PRESCALE"; 
-    else trigname="DILEPTON_MET";
-  }
-
 
   if(Debug){std::cout << "Trigname: " << trigname << std::endl;}
 
@@ -2262,13 +2298,13 @@ int DiLepton :: nMetTrigger_xe110(std::vector<std::string> trigInfo){
   return (int)nTrig;
 }
 
-bool DiLepton :: isTrigMatch(int yearOpt, xAOD::MuonContainer *muons, xAOD::ElectronContainer* electrons, float met, std::vector<std::string> trigInfo, bool doMatch, int period, float metcut){
+bool DiLepton :: isTrigMatch(int yearOpt, xAOD::MuonContainer *muons, xAOD::ElectronContainer* electrons, float met, std::vector<std::string> trigInfo, bool doMatch, int period, bool prescale, float metcut){
 
   const char *APP_NAME = "DiLepton::TriggerMatch()";
   bool pass(true);
   if( !doMatch ) return pass;
   std::vector<std::string> trigList;
-  std::string MuMuItem, ElElItem, ElMuItem;
+  std::string MuMuItem, ElElItem, ElMuItem, ElElItem2;
   float ptCutMuMu(0), ptCutElEl(0), ptCutElMu(0);
 
   switch( yearOpt ){
@@ -2307,13 +2343,25 @@ bool DiLepton :: isTrigMatch(int yearOpt, xAOD::MuonContainer *muons, xAOD::Elec
       }
       break;
     case 2017:
-      trigList = triggerList2017;
-      MuMuItem  = "HLT_mu22_mu8noL1";
-      ElElItem  = "HLT_2e24_lhvloose_nod0";
-      ElMuItem  = "HLT_e17_lhloose_nod0_mu14";
-      ptCutMuMu  = 23000.;
-      ptCutElEl  = 20000.;
-      ptCutElMu  = 20000.;
+      if(prescale==1){
+        trigList = triggerList2017_PS;
+        MuMuItem  = "HLT_mu22_mu8noL1";
+        ElElItem  = "HLT_2e24_lhvloose_nod0";
+        ElMuItem  = "HLT_e17_lhloose_nod0_mu14";
+        ptCutMuMu  = 23000.;
+        ptCutElEl  = 20000.;
+        ptCutElMu  = 20000.;
+      }
+      if(prescale==0){
+        trigList = triggerList2017;
+        MuMuItem  = "HLT_mu22_mu8noL1";
+        ElElItem  = "HLT_2e24_lhvloose_nod0";
+        ElElItem2 = "HLT_2e17_lhvloose_nod0_L12EM15VHI";
+        ElMuItem  = "HLT_e17_lhloose_nod0_mu14";
+        ptCutMuMu  = 23000.;
+        ptCutElEl  = 20000.;
+        ptCutElMu  = 20000.;
+      }
       if( met>metcut && this->nMetTrigger(trigInfo) ){
         if(Debug){std::cout << APP_NAME << Form(" DEBUG \t EtMiss > %.0f and event is triggered by %i EtMiss trigger, return %i", metcut, this->nMetTrigger(trigInfo), pass) << std::endl;}
         return pass;
@@ -2333,14 +2381,34 @@ bool DiLepton :: isTrigMatch(int yearOpt, xAOD::MuonContainer *muons, xAOD::Elec
   for(auto el : *electrons){
     if( el->pt()>ptCutElEl && SusyObjTool->IsTrigMatched(el, ElElItem) ) matchElEl++;
     if( el->pt()>ptCutElMu && SusyObjTool->IsTrigMatched(el, ElMuItem) ) matchElMu++;
+    switch( yearOpt ){
+      case 2017:
+        if(prescale==0){
+          if( el->pt()>ptCutElEl && SusyObjTool->IsTrigMatched(el, ElElItem2) ) matchElEl++;
+        }
+    }
   }
   if(Debug){std::cout << APP_NAME << Form(" DEBUG \t TrigConfig(%i) %s|%s|%s = [%i|%i|%i]",yearOpt,MuMuItem.c_str(),ElElItem.c_str(),ElMuItem.c_str(),matchMuMu,matchElEl,matchElMu) << std::endl;}
 
   bool MM = (matchMuMu>1  && containStr(trigInfo, MuMuItem) );
   bool EE = (matchElEl>1  && containStr(trigInfo, ElElItem) );
   bool EM = (matchElMu>1  && containStr(trigInfo, ElMuItem) );
+  bool EE2(0);
+  switch( yearOpt ){
+    case 2017:
+      if(prescale==0){
+        EE2 = (matchElEl>2  && containStr(trigInfo, ElElItem2) );
+      }
+  }
 
   pass = (MM || EE || EM);  
+  switch( yearOpt ){
+    case 2017:
+      if(prescale==0){
+        pass = (MM || EE || EM || EE2);
+      }
+  }
+
   return pass;
 }
 
@@ -2703,9 +2771,9 @@ int DiLepton :: getQuality(const xAOD::Muon &mu){
 int DiLepton :: getQuality(const xAOD::Electron &el){
   int type(0);
   if( el.auxdata<char>("passOR")==1 ) type++;
-  if(Debug){std::cout << "passOR: " << type << std::endl;}
+  //if(Debug){std::cout << "passOR: " << type << std::endl;}
   if( type>0 && el.auxdata<char>("SIG")==1 ) type++;
-  if(Debug){std::cout << "getQuality: " << type << std::endl;}
+  //if(Debug){std::cout << "getQuality: " << type << std::endl;}
   return type;
 }
 
