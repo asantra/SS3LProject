@@ -40,6 +40,7 @@ parser.add_argument("--overwrite", action='store_true', default=True, help="over
 parser.add_argument("--isData",    type=int, help="Data flag [0/1]",    default=0)
 parser.add_argument("--isAtlfast", type=int, help="ATLFAST flag [0/1]", default=0)
 parser.add_argument("--isMC15",    type=int, help="mc15 configuration of prw [A=1/B=2/C=3/D=4]", default=0)
+parser.add_argument("--isMC16",    type=int, help="mc16 configuration of prw [2015/2016/2017/2018]", default=2016)
 parser.add_argument("--makeHist",  type=int, help="Add Histos to output  [0/1]", default=0)
 parser.add_argument("--makeTree",  type=int, help="Add TTree to output [1/0/2]", default=1)
 parser.add_argument("--R1Jets",    type=int, help="Add R1Jets to output[No=0/FatJets=1/RecJets=2]",default=0)
@@ -160,6 +161,7 @@ alg.SysList = options.SysList
 alg.NSignalLeptons = options.NSignalLeptons;
 alg.doSys = options.doSys
 alg.mc15 = options.isMC15
+alg.mc16 = options.isMC16
 alg.makeHist = options.makeHist
 alg.makeTree = options.makeTree
 alg.getR1Jets = options.R1Jets
