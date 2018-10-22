@@ -263,6 +263,7 @@ class DiLepton : public EL::Algorithm
   std::vector< std::string > triggerList2015; //!
   std::vector< std::string > triggerList2016; //!
   std::vector< std::string > triggerList2017; //!
+  std::vector< std::string > triggerList2017_PS; //!
 
   bool setTriggers(std::vector<std::string> &trigList, std::string trigname="", int option=2016); //!
   bool isTriggered(std::vector<std::string> trigList, std::vector<std::string> &trigInfo, bool enabled=1); //!
@@ -369,7 +370,7 @@ class DiLepton : public EL::Algorithm
   void checkOR(xAOD::IParticleContainer *p); //!
 
 
-  bool isTrigMatch(int yearOpt, xAOD::MuonContainer *muons, xAOD::ElectronContainer* electrons, float met, std::vector<std::string> trigInfo, bool doMatch=true, int period=0, float metcut=250000.); //
+  bool isTrigMatch(int yearOpt, xAOD::MuonContainer *muons, xAOD::ElectronContainer* electrons, float met, std::vector<std::string> trigInfo, bool doMatch=true, int period=0, bool prescaled=false, float metcut=250000.); //
  
   bool isSignalMuon(xAOD::Muon &mu, float ptcut=10000., float etamax=2.5); //!
   bool isSignalElectron(xAOD::Electron &el, float ptcut=10000., float etamax=2.0); //!
@@ -439,6 +440,7 @@ class DiLepton : public EL::Algorithm
   int isAtlfast;
   int PileupReweighting;
   int mc15;
+  int mc16;
   int doSys;
   int makeHist;
   int makeTree;
