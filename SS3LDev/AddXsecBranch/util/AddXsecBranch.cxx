@@ -19,8 +19,9 @@
 
 #include <ROOT/RDataFrame.hxx>
 
-using TDataFrame = ROOT::RDataFrame;
+//using TDataFrame = ROOT::RDataFrame;
 using namespace std;
+using namespace ROOT;
 
 void Export(string in_file_name, string out_file_name) {
 
@@ -61,7 +62,11 @@ void Export(string in_file_name, string out_file_name) {
   double unfilterednev = eventsbeforefilter->GetEntries();
   cout << "Total Number of Entries: " << unfilterednev << endl;
 
-  TDataFrame d(control_tree.c_str(), f_in);
+  //TDataFrame d(control_tree.c_str(), f_in);
+  ROOT::EnableImplicitMT();
+  ROOT::RDataFrame d(control_tree.c_str(), f_in);
+  
+  
   double Sum_MCWeights = d.Sum("MCWeight").GetValue();
   cout << "Total Number of Weighted Entries: " << Sum_MCWeights << endl;
 
@@ -83,7 +88,8 @@ void Export(string in_file_name, string out_file_name) {
 
       cout << " processing tree " << tree_name << endl;
 
-      TDataFrame df(tree_name.c_str(), f_in);
+      //TDataFrame df(tree_name.c_str(), f_in);
+      Root::RDataFrame df(tree_name.c_str(), f_in);
 
 
       auto colNames = df.GetColumnNames();

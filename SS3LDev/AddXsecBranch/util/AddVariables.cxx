@@ -14,12 +14,13 @@
 #include "TLorentzVector.h"
 
 
-#include <ROOT/TDataFrame.hxx>
+//#include <ROOT/TDataFrame.hxx>
 
 #include <ROOT/RDataFrame.hxx>
-using TDataFrame = ROOT::RDataFrame;
+//using TDataFrame = ROOT::RDataFrame;
 
 using namespace std;
+using namespace ROOT;
 
 void Export(string in_file_name, string out_file_name) {
 
@@ -38,7 +39,9 @@ void Export(string in_file_name, string out_file_name) {
     return;
   }
 
-  TDataFrame df(tree_name.c_str(), f_in);
+  //TDataFrame df(tree_name.c_str(), f_in);
+  ROOT::EnableImplicitMT();
+  ROOT::RDataFrame df(tree_name.c_str(), f_in);
 
 
   auto colNames = df.GetColumnNames();
@@ -69,7 +72,7 @@ void Export(string in_file_name, string out_file_name) {
 
     auto compute_sum_bjet_pt = [](const std::vector<TLorentzVector> & TLVs, const std::vector<float> & tags ) {
       float sumbjpts = 0;
-      for (int i=0; i<TLVs.size(); i++){
+      for (size_t i=0; i<TLVs.size(); i++){
         if ( (bool) tags.at(i)) {
         sumbjpts+=TLVs.at(i).Pt();
         }
