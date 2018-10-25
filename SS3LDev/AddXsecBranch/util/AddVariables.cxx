@@ -15,7 +15,8 @@
 
 
 #include <ROOT/TDataFrame.hxx>
-#include <ROOT/RTDataFrame.hxx>
+
+#include <ROOT/RDataFrame.hxx>
 using TDataFrame = ROOT::RDataFrame;
 
 using namespace std;
